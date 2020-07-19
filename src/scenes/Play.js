@@ -1,4 +1,8 @@
 //var cursors;
+var arrow;
+var ball;
+var catchFlag = false;
+var launchVelocity = 0;
 
 class Play extends Phaser.Scene { 
     constructor() {
@@ -31,13 +35,56 @@ class Play extends Phaser.Scene {
         
         
         
-    
+       
     
         
     
     create() {
 
-        
+    //this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // set global gravity
+    //this.game.physics.arcade.gravity.y = 200;
+    //game.stage.backgroundColor = '#0072bc';
+    
+    /*var graphics = game.add.graphics(0,0);
+    graphics.beginFill(0x049e0c);
+    graphics.drawRect(395, 350, 10, 250);
+
+    //analog = game.add.sprite(400, 350, 'annalog');
+
+    game.physics.enable(analog, Phaser.Physics.ARCADE);
+
+    analog.body.allowGravity = false;
+    analog.width = 8;
+    analog.rotation = 220;
+    analog.alpha = 0;
+    analog.anchor.setTo(0.5, 0.0);
+    
+    arrow = game.add.sprite(400, 350, 'arrow');
+
+    game.physics.enable(arrow, Phaser.Physics.ARCADE);
+
+    arrow.anchor.setTo(0.1, 0.5);
+    arrow.body.moves = false;
+    arrow.body.allowGravity = false;
+    arrow.alpha = 0;
+    
+    ball = this.add.image(100, 400, 'neurotransmitter');
+    game.physics.enable(ball, Phaser.Physics.ARCADE);
+    this.physics.arcade.gravity.y = 200;
+    ball.anchor.setTo(0.5, 0.5);
+    ball.body.collideWorldBounds = true;
+    ball.body.bounce.setTo(0.9, 0.9);
+    
+    // Enable input.
+    ball.inputEnabled = true;
+    ball.input.start(0, true);
+    ball.events.onInputDown.add(set);
+    ball.events.onInputUp.add(launch);
+
+
+*/
         //this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
 
         this.clock1 = this.time.delayedCall(30000, () => {
@@ -92,9 +139,11 @@ class Play extends Phaser.Scene {
 
         // add rocket (p1)
         //this.p1Rocket = new Ion(this, game.config.width/2, 431, 'neurotransmitter').setOrigin(0, 0);
-        this.p1Rocket = this.physics.add.image(game.config.width/2, 431, 'neurotransmitter').setScale(0.3, 0.3);
-        this.p1Rocket.setCollideWorldBounds(true);
-        //this.p1Rocket.body.setAllowGravity(true).setVelocity(40);
+        this.p1Rocket = this.physics.add.sprite(game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
+        this.p1Rocket.setCollideWorldBounds(false);
+        this.p1Rocket.body.setAllowGravity(false);
+        
+        
         /* this.rockets = this.physics.add.group({
             defaultKey: 'neurotransmitter',
             maxSize: 10
@@ -276,7 +325,7 @@ class Play extends Phaser.Scene {
             
         }
         
-        function shoot() {
+        /* function shoot() {
             var rocket = this.rockets.get(rocket.x, rocket.y);
             if (rocket) {
                 rocket.setActive(true);
@@ -284,7 +333,7 @@ class Play extends Phaser.Scene {
                 rocket.body.velocity.y = -200;
                 rocket.body.velocity.x = -200;
             }
-        }
+        } */
 
 
             
@@ -298,10 +347,11 @@ if(!this.game.isOver) {
         this.ship05.update();
         this.ship06.update();
         //this.ship07.update();
+        this.p1Rocket.update();
         
 }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
-            game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
+            //game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
             this.scene.restart(this.p1score);
         }
 
@@ -315,8 +365,16 @@ if(!this.game.isOver) {
         } */
 
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
-            this.input.on(keyF, this.shoot, this);
+            this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
+            //this.isfiring.setVisible(true)
+            console.log(this.p1Rocket.body.gravity);
+
+
         }
+        if(this.p1Rocket.isOutOfBounds)
+        /* if(this.p1Rocket.x > game.config.width || this.p1Rocket.x < game.config.width*2 || this.p1Rocket.y > game.config.height || this.p1Rocket.y < game.config.height*2) {
+            this.p1Rocket.reset(this.p1Rocket.x, this.p1Rocket.y);
+        } */
 
         if((!this.gameOver) && this.isFiring) {
 
@@ -375,7 +433,7 @@ if(!this.game.isOver) {
         
         this.sound1 = this.sound.add('memoryretrieved', audioConfig);
         
-        if(this.checkTopCollision(this.iconTop, this.ship06)) {
+        if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
             this.sound1.play(audioConfig);
             this.iconTop.alpha = 1;
         }
@@ -399,15 +457,15 @@ if(!this.game.isOver) {
 
     
     
-    checkTopCollision(icon, ship) {
+   checkTopCollision(icon, ship) {
         if(icon.x < ship.x + ship.width * ship.scale && icon.x + icon.width * icon.scale > ship.x && icon.y < ship.y + ship.height * ship.scale && icon.height * icon.scale + icon.y > ship.y) {
-            icon.alpha += 0.2;
+            //icon.alpha += 0.2;
             return true;
             
         } else {
             return false;
         }
-    }
+    } 
 
     shipExplode(ship) {
         // temporarily hide ship

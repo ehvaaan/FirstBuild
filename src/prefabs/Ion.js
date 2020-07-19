@@ -20,9 +20,7 @@ class Ion extends Phaser.GameObjects.Sprite {
     update() {
         // left/right movement
         if((!this.isFiring) || (this.isFiring)) {
-            if(keyLEFT.isDown && this.x >= 47) { 
-                this.x -= 2;
-            } else if(keyRIGHT.isDown && this.x <= 578) {
+            if(keyRIGHT.isDown && this.x <= 578) {
                 this.x += 2;
             }
         }
@@ -34,9 +32,11 @@ class Ion extends Phaser.GameObjects.Sprite {
             //scene.add.text(69, 54, 'FIRE!', scoreConfig);
             // play sfx
             this.sfxRocket.play();
-            this.scene.fire.setVisible(true);
+            //this.scene.fire.setVisible(true);
         }
-        
+         if(this.isFiring) {
+             this.scene.fire.setVisible(true);
+         }
         
         /*this.add.rectangle(260, 55, 100, 34, 0xF3B141).setOrigin(0, 0);
         this.fire = this.add.text(69, 54, 'FIRE', fireConfig).setOrigin(0.5);
@@ -57,17 +57,20 @@ class Ion extends Phaser.GameObjects.Sprite {
             //this.reset();
         }
         
+        console.log(this.y);
         // reset on miss - if this was greater than, it would constantly reset
-        if(this.y <= 108) {
+        if((this.y <= 108) || (this.y >= game.config.height -20)) {
             this.isFiring = false;
-            this.y = 431;
+            this.p1Rocket.reset();
             this.scene.fire.setVisible(false);
         }
+
     }
     // reset rocket to "ground" if collision occurs
     reset() {
         this.isFiring = false;
-        this.y = 431;
+        this.y = 450;
+        this.x = game.config.width - game.config.width;
         this.scene.fire.setVisible(false);
     }
 }

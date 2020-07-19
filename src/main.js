@@ -10,8 +10,14 @@ let config = {
             gravity: {
                 //debug:true
                 x: 0,
-                y: 0
-            }
+                y: 1000
+            },
+            checkCollision: {
+                up: true,
+                down: true
+            },
+            width: 640,
+            height: 480,
     }
 },
 };
