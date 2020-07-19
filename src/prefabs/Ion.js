@@ -57,13 +57,13 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         // if fired, move up (negative moves UP the screen)
         
 
-        if(this.isFiring && this.y >= 108) {
+        /* if(this.isFiring && this.y >= 108) {
             //this.reset();
-        }
+        } */
         
         
         // reset on miss - if this was greater than, it would constantly reset
-        if(this.y >= game.config.height) {
+        if(this.isFiring && this.y >= game.config.height) {
             console.log(game.config.height);
             this.reset();
             this.isFiring = false;
