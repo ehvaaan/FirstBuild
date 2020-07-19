@@ -30,6 +30,7 @@ class Ion extends Phaser.GameObjects.Sprite {
         // fire button
         if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring) {
             this.isFiring = true;
+            this.shoot(this);
             //scene.add.text(69, 54, 'FIRE!', scoreConfig);
             // play sfx
             this.sfxRocket.play();
@@ -53,7 +54,7 @@ class Ion extends Phaser.GameObjects.Sprite {
         
 
         if(this.isFiring && this.y >= 108) {
-            this.y -= 2;
+            //this.reset();
         }
         
         // reset on miss - if this was greater than, it would constantly reset

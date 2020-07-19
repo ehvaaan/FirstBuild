@@ -4,6 +4,16 @@ let config = {
     width: 640,
     height: 480,
     scene: [ Menu, Play ],
+    physics:{
+        default:'arcade',
+        arcade: {
+            gravity: {
+                //debug:true
+                x: 0,
+                y: 0
+            }
+    }
+},
 };
 
 // create main game object//

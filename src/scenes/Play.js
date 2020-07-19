@@ -38,7 +38,7 @@ class Play extends Phaser.Scene {
     create() {
 
         
-        
+        //this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
 
         this.clock1 = this.time.delayedCall(30000, () => {
             game.settings.spaceshipSpeed = game.settings.spaceshipSpeed*1.5;
@@ -91,9 +91,25 @@ class Play extends Phaser.Scene {
         this.fire.setVisible(false);
 
         // add rocket (p1)
-        this.p1Rocket = new Ion(this, game.config.width/2, 431, 'neurotransmitter').setScale(2, 2).setOrigin(0, 0);
-    
+        //this.p1Rocket = new Ion(this, game.config.width/2, 431, 'neurotransmitter').setOrigin(0, 0);
+        this.p1Rocket = this.physics.add.image(game.config.width/2, 431, 'neurotransmitter').setScale(0.3, 0.3);
+        this.p1Rocket.setCollideWorldBounds(true);
+        //this.p1Rocket.body.setAllowGravity(true).setVelocity(40);
+        /* this.rockets = this.physics.add.group({
+            defaultKey: 'neurotransmitter',
+            maxSize: 10
+        }); */
+        //this.game.physics.gravity.y = 100;
+        //this.p1Rocket.game.physics.gravity.x = 100;
+
+    //  Sprite 1 will use the World (global) gravity
+        //this.p1Rocket = game.add.sprite('neurotransmitter');
+        //sprite1.body.collideWorldBounds = true;
+        //sprite1.body.bounce.y = 0.8;
+        //this.game.physics.enable(this.p1Rocket, Phaser.Physics.ARCADE);
+        //this.p1Rocket.setPosition(0 + ground.centerOfMass.x, 280 + ground.centerOfMass.y);
         // add 3 spaceships
+        
         this.ship01 = new Transmitter(this, game.config.width, 335, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship02 = new Transmitter(this, game.config.width, 275, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship03 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
@@ -101,6 +117,21 @@ class Play extends Phaser.Scene {
         this.ship05 = new Transmitter(this, game.config.width, 95, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship06 = new Transmitter(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
         //this.ship07 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+
+        
+
+        //this.p1Rocket.body.collideWorldBounds = true;
+        //this.p1Rocket.bounce.y = 0.8;
+        
+        /*sprite2.body.collideWorldBounds = true;
+        sprite2.body.bounce.y = 0.8;
+        sprite2.body.gravity.y = 200;
+        
+        sprite3.body.collideWorldBounds = true;
+        sprite3.body.bounce.y = 0.8;
+        sprite3.body.gravity.y = 50;
+    
+        sprite4.body.allowGravity = false;*/
 
         // display timer
         //this.timeLeft = this.add.text(69, 54, this.game.settings.gameTimer.duration, fireConfig);        
@@ -245,10 +276,20 @@ class Play extends Phaser.Scene {
             
         }
         
-        if(!this.gameOver) {
-        // update rocket
-        this.p1Rocket.update();
+        function shoot() {
+            var rocket = this.rockets.get(rocket.x, rocket.y);
+            if (rocket) {
+                rocket.setActive(true);
+                rocket.setVisible(true);
+                rocket.body.velocity.y = -200;
+                rocket.body.velocity.x = -200;
+            }
+        }
 
+
+            
+        
+if(!this.game.isOver) {
         // update spaceships
         this.ship01.update();
         this.ship02.update();
@@ -257,8 +298,8 @@ class Play extends Phaser.Scene {
         this.ship05.update();
         this.ship06.update();
         //this.ship07.update();
-        }
-
+        
+}
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
             this.scene.restart(this.p1score);
@@ -269,15 +310,18 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
-        if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
+        /*if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
             this.brain.tilePositionX -= 2;
+        } */
+
+        if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
+            this.input.on(keyF, this.shoot, this);
         }
 
-        if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyRIGHT) || (keyRIGHT.isDown))) {
-            this.brain.tilePositionX += 2;
+        if((!this.gameOver) && this.isFiring) {
+
         }
-        // scroll tile sprite
-        //this.brain.tilePositionX -= 2;
+        
 
         
 
@@ -289,7 +333,7 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             //this.scene.destroy(this.ship01);
             this.shipExplode(this.ship01);
-            this.iconTop.alpha = 0.2;
+            //this.iconTop.alpha = 0.2;
             //this.remove(this.ship01, true, true);
             //this.ship01.destroy(true);
             //this.ship01.reset();
@@ -345,6 +389,7 @@ class Play extends Phaser.Scene {
         // simple AABB bounds checking - do they overlap
     checkCollision(rocket, ship) {
         if(rocket.x < ship.x + ship.width * ship.scale && rocket.x + rocket.width * rocket.scale > ship.x && rocket.y < ship.y + ship.height * ship.scale && rocket.height * rocket.scale + rocket.y > ship.y) {
+            
             return true;
             
         } else {
@@ -356,6 +401,7 @@ class Play extends Phaser.Scene {
     
     checkTopCollision(icon, ship) {
         if(icon.x < ship.x + ship.width * ship.scale && icon.x + icon.width * icon.scale > ship.x && icon.y < ship.y + ship.height * ship.scale && icon.height * icon.scale + icon.y > ship.y) {
+            icon.alpha += 0.2;
             return true;
             
         } else {
@@ -369,7 +415,7 @@ class Play extends Phaser.Scene {
         // create explosion sprite at ship's position
         //let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         
-        if(ship.isSmallShip()) {
+        /* if(ship.isSmallShip()) {
             this.explodeParticles.createEmitter({
                 x: ship.x, 
                 y: ship.y,
@@ -405,7 +451,8 @@ class Play extends Phaser.Scene {
             ship.reset(); // reset ship position
             ship.alpha = 1;
             //boom.anims.play('explode').setScale(0.5, 0.5); // play explode animation
-        } else {
+        } */
+        if(!ship.isSmallShip()) {
         this.explodeParticles.createEmitter({
             x: ship.x, 
             y: ship.y,
