@@ -138,9 +138,9 @@ class Play extends Phaser.Scene {
         this.fire.setVisible(false);
 
         // add rocket (p1)
-        //this.p1Rocket = new Ion(this, game.config.width/2, 431, 'neurotransmitter').setOrigin(0, 0);
-        this.p1Rocket = this.physics.add.sprite(game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
-        this.p1Rocket.setCollideWorldBounds(false);
+        this.p1Rocket = new Ion(this, game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
+        //this.p1Rocket = this.physics.add.sprite(game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
+        this.p1Rocket.body.setCollideWorldBounds(false);
         this.p1Rocket.body.setAllowGravity(false);
         
         
@@ -338,7 +338,7 @@ class Play extends Phaser.Scene {
 
             
         
-if(!this.game.isOver) {
+if(!this.gameOver) {
         // update spaceships
         this.ship01.update();
         this.ship02.update();
@@ -347,7 +347,7 @@ if(!this.game.isOver) {
         this.ship05.update();
         this.ship06.update();
         //this.ship07.update();
-        this.p1Rocket.update();
+        //this.p1Rocket.update();
         
 }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
@@ -366,8 +366,11 @@ if(!this.game.isOver) {
 
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
             this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
+            this.p1Rocket.update();
             //this.isfiring.setVisible(true)
-            console.log(this.p1Rocket.body.gravity);
+            //console.log(this.p1Rocket.body.velocity);
+            //console.log(this.p1Rocket.body.gravity);
+            //console.log(game.config.height);
 
 
         }
@@ -391,7 +394,7 @@ if(!this.game.isOver) {
             this.p1Rocket.reset();
             //this.scene.destroy(this.ship01);
             this.shipExplode(this.ship01);
-            //this.iconTop.alpha = 0.2;
+            this.iconTop.alpha += 0.2;
             //this.remove(this.ship01, true, true);
             //this.ship01.destroy(true);
             //this.ship01.reset();
