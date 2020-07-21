@@ -20,7 +20,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         // left/right movement
-        if((!this.isFiring) || (this.isFiring)) {
+        if(this.isFiring) {
             if(keyRIGHT.isDown && this.x <= 578) {
                 this.x += 2;
             } else if(keyLEFT.isDown && this.x > game.config.width - game.config.width) {
@@ -29,15 +29,30 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         }
         
         // fire button
-        if((Phaser.Input.Keyboard.JustDown(keyF)) || (!this.isFiring)) {
-            console.log(game.config.height);
+        if(Phaser.Input.Keyboard.JustDown(keyF)) {
+            
             this.isFiring = true;
-            //this.shoot(this);
-            //scene.add.text(69, 54, 'FIRE!', scoreConfig);
-            // play sfx
+            
+            if(this.isFiring == true && this.x == game.config.width - game.config.width) {
+            console.log(this.y);
             this.sfxRocket.play();
             this.scene.fire.setVisible(true);
         }
+            this.isFiring = false;
+            //this.shoot(this);
+            //scene.add.text(69, 54, 'FIRE!', scoreConfig);
+            // play sfx
+           
+        }
+        
+        
+        if(this.isFiring = true) {
+            
+        }
+            // disables double jump
+        /* if((Phaser.Input.Keyboard.JustDown(keyF)) && (this.isFiring)) {
+            this.isFiring = false;
+        } */
         /* if(this.isFiring) {
              this.scene.fire.setVisible(true);
          } */
@@ -63,8 +78,8 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         
         
         // reset on miss - if this was greater than, it would constantly reset
-        if(this.isFiring && this.y >= game.config.height) {
-            console.log(game.config.height);
+        if((this.y > 490) || (this.y < 0) || (this.x > game.config.width)){
+            console.log(this.y);
             this.reset();
             this.isFiring = false;
             this.scene.fire.setVisible(false);

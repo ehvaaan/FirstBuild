@@ -12,15 +12,15 @@ class Menu extends Phaser.Scene {
     this.load.audio('target4', './assets/target3.wav' );
     this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
     this.load.image('transmitter', './assets/transmitter.png');
-    this.load.audio('background', './assets/background.wav')
+    //this.load.audio('background', './assets/background.wav')
 }
     
     
 
     create() {
-    var music = this.sound.add('background');
+    /*var music = this.sound.add('background');
     music.setLoop(true);
-    music.play();
+    music.play();*/
     //this.synth = this.sound.play('background');
 
     // menu display
@@ -99,7 +99,7 @@ class Menu extends Phaser.Scene {
                 gameTimer: 60000
             }
                 
-        this.sound.play('sfx_select');
+        //this.sound.play('sfx_select');
         this.scene.start("playScene");
 
         }

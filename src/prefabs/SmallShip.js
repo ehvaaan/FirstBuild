@@ -12,7 +12,7 @@ class SmallShip extends Transmitter {
         
     update() {
         // move spaceship left
-        this.x -= game.settings.spaceshipSpeed * 2;
+        this.x -= game.settings.spaceshipSpeed*1.5;
 
         // wrap around from left to right edge
         if(this.x <= 0 - this.width) {
@@ -22,6 +22,10 @@ class SmallShip extends Transmitter {
         // wrap around from right to left edge
         
     }
-
+    
+    destroy() {
+        this.x = 800;
+        this.y = 800;
+    }
 
 }

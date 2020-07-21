@@ -32,7 +32,7 @@ game.settings = {
     gameTimer: 60000
 }
 // reserve some keyboard
-let keySPACE, keyM, keyF, keyLEFT, keyRIGHT;
+let keySPACE, keyQ, keyM, keyF, keyLEFT, keyRIGHT;
 
 let highScore;
 let level;

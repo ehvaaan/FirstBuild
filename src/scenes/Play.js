@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
         this.load.image('particle1', './assets/circle_03.png');
         this.load.image('particle2', './assets/circle_02.png')
         this.load.image('particle3', './assets/circle_04.png')
-
+        this.load.audio('background', './assets/background.wav')
         this.load.audio('memoryretrieved', './assets/memoryretrieved.wav')
 
         
@@ -40,52 +40,12 @@ class Play extends Phaser.Scene {
         
     
     create() {
-
-    //this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-    // set global gravity
-    //this.game.physics.arcade.gravity.y = 200;
-    //game.stage.backgroundColor = '#0072bc';
     
-    /*var graphics = game.add.graphics(0,0);
-    graphics.beginFill(0x049e0c);
-    graphics.drawRect(395, 350, 10, 250);
+    var music = this.sound.add('background');
+    //music.setLoop(true);
+    music.play();
 
-    //analog = game.add.sprite(400, 350, 'annalog');
-
-    game.physics.enable(analog, Phaser.Physics.ARCADE);
-
-    analog.body.allowGravity = false;
-    analog.width = 8;
-    analog.rotation = 220;
-    analog.alpha = 0;
-    analog.anchor.setTo(0.5, 0.0);
-    
-    arrow = game.add.sprite(400, 350, 'arrow');
-
-    game.physics.enable(arrow, Phaser.Physics.ARCADE);
-
-    arrow.anchor.setTo(0.1, 0.5);
-    arrow.body.moves = false;
-    arrow.body.allowGravity = false;
-    arrow.alpha = 0;
-    
-    ball = this.add.image(100, 400, 'neurotransmitter');
-    game.physics.enable(ball, Phaser.Physics.ARCADE);
-    this.physics.arcade.gravity.y = 200;
-    ball.anchor.setTo(0.5, 0.5);
-    ball.body.collideWorldBounds = true;
-    ball.body.bounce.setTo(0.9, 0.9);
-    
-    // Enable input.
-    ball.inputEnabled = true;
-    ball.input.start(0, true);
-    ball.events.onInputDown.add(set);
-    ball.events.onInputUp.add(launch);
-
-
-*/
-        //this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
+  
 
         this.clock1 = this.time.delayedCall(30000, () => {
             game.settings.spaceshipSpeed = game.settings.spaceshipSpeed*1.5;
@@ -164,7 +124,7 @@ class Play extends Phaser.Scene {
         this.ship03 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship04 = new Transmitter(this, game.config.width, 155, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship05 = new Transmitter(this, game.config.width, 95, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.ship06 = new Transmitter(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
+        this.ship06 = new SmallShip(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
         //this.ship07 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
 
         
@@ -191,6 +151,7 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+        keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         
         // animation config
         /*
@@ -351,8 +312,9 @@ if(!this.gameOver) {
         
 }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
-            //game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
+            game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
             this.scene.restart(this.p1score);
+            
         }
 
 
@@ -360,28 +322,37 @@ if(!this.gameOver) {
             this.scene.start("menuScene");
         }
 
+        // QUIT option - music needs to restart
+        if(!this.gameOver && Phaser.Input.Keyboard.JustDown(keyQ)) {
+            this.scene.start("menuScene");
+            //this.scene.music.stop();
+        }
         /*if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
             this.brain.tilePositionX -= 2;
         } */
+        this.inAir = false;
 
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
             this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
-            this.p1Rocket.update();
-            //this.isfiring.setVisible(true)
+            this.inAir = true;
+            //this.isFiring = true;
+            //this.scene.fire.setVisible(true)
             //console.log(this.p1Rocket.body.velocity);
             //console.log(this.p1Rocket.body.gravity);
             //console.log(game.config.height);
 
 
         }
-        if(this.p1Rocket.isOutOfBounds)
-        /* if(this.p1Rocket.x > game.config.width || this.p1Rocket.x < game.config.width*2 || this.p1Rocket.y > game.config.height || this.p1Rocket.y < game.config.height*2) {
-            this.p1Rocket.reset(this.p1Rocket.x, this.p1Rocket.y);
-        } */
 
-        if((!this.gameOver) && this.isFiring) {
-
+        if(this.inAir && (Phaser.Input.Keyboard.JustDown(keyF))){
+            this.p1Rocket.body.setAllowGravity(false).setVelocity(0);
         }
+        
+       if(!this.gameOver) {
+            this.p1Rocket.update();
+        }
+
+       
         
 
         
@@ -394,7 +365,7 @@ if(!this.gameOver) {
             this.p1Rocket.reset();
             //this.scene.destroy(this.ship01);
             this.shipExplode(this.ship01);
-            this.iconTop.alpha += 0.2;
+            this.iconTop.alpha += 0.1;
             //this.remove(this.ship01, true, true);
             //this.ship01.destroy(true);
             //this.ship01.reset();
@@ -406,40 +377,45 @@ if(!this.gameOver) {
         if(this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
-            this.iconTop.alpha = 0.4;
+            this.iconTop.alpha += 0.1;
         }
         
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03); 
-            this.iconTop.alpha = 0.5;
+            this.iconTop.alpha += 0.2;
             // make second reset method so it will reset coming from other direction
         }
 
         if(this.checkCollision(this.p1Rocket, this.ship04)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship04);
-            this.iconTop.alpha = 0.6;
+            this.iconTop.alpha += 0.1;
         }   
 
         if(this.checkCollision(this.p1Rocket, this.ship05)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship05);
-            this.iconTop.alpha = 0.7;
+            this.iconTop.alpha += 0.1;
         }
-
-        if(this.checkCollision(this.p1Rocket, this.ship06)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship06);
-            this.iconTop.alpha = 0.8;
-        }   
         
         this.sound1 = this.sound.add('memoryretrieved', audioConfig);
         
+        if(this.checkCollision(this.p1Rocket, this.ship06)) {
+            this.p1Rocket.reset();
+            this.shipExplode(this.ship06);
+            this.iconTop.alpha += 0.1;
+        }   
+
         if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
             this.sound1.play(audioConfig);
             this.iconTop.alpha = 1;
         }
+        
+        
+        /* if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
+            
+        } */
         /* if(this.checkCollision(this.p1Rocket, this.ship07)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship07);
@@ -476,7 +452,7 @@ if(!this.gameOver) {
         // create explosion sprite at ship's position
         //let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         
-        /* if(ship.isSmallShip()) {
+        if(ship.isSmallShip()) {
             this.explodeParticles.createEmitter({
                 x: ship.x, 
                 y: ship.y,
@@ -509,10 +485,11 @@ if(!this.gameOver) {
                 frequency: 0,
                 scale: 0.5
             }).explode();
-            ship.reset(); // reset ship position
-            ship.alpha = 1;
+            this.icon = this.add.image(ship.x + 10, ship.y + 15, 'transmitter').setScale(0.3, 0.3);
+            ship.destroy(); // reset ship position
+            //ship.alpha = 1;
             //boom.anims.play('explode').setScale(0.5, 0.5); // play explode animation
-        } */
+        } 
         if(!ship.isSmallShip()) {
         this.explodeParticles.createEmitter({
             x: ship.x, 
@@ -547,7 +524,7 @@ if(!this.gameOver) {
         //ship.destroy(true);
         
         this.icon = this.add.image(ship.x + 35, ship.y + 35, 'transmitter').setScale(0.5, 0.5);
-        ship.reset();
+        ship.destroy();
         //this.ship.settings.spaceshipSpeed = 0;
         //boom.anims.play('explode'); // play explode animation
     }

@@ -37,4 +37,9 @@ class Transmitter extends Phaser.GameObjects.Sprite {
     reset() {
         this.x = game.config.width;
     }
+
+    destroy() {
+        this.x = 800;
+        this.y = 800;
+    }
 }
