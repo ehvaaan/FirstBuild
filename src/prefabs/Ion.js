@@ -26,7 +26,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
             } else if(keyLEFT.isDown && this.x > game.config.width - game.config.width) {
                 this.x -= 2;
             }
-            this.scene.fire.setVisible(false);
+            //this.scene.fire.setVisible(false);
         }
         
         // fire button
@@ -34,7 +34,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         /*if(Phaser.Input.Keyboard.JustDown(keyF)) {
             
         } */
-        if(!this.isFiring) {
+        if(!this.isFiring && (Phaser.Input.Keyboard.JustDown(keyF))) {
             
             console.log(this.y);
             this.sfxRocket.play();
