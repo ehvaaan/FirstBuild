@@ -14,21 +14,20 @@ class Play extends Phaser.Scene {
         this.load.image('neurotransmitter', './assets/neurotransmitter.png');
         this.load.image('transmitter', './assets/transmitter.png');
         this.load.image('receptor', './assets/receptor.png');
-        //this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('ufo', './assets/ufo1.png'); // bonus ship
         this.load.image('brain', './assets/brain.png'); // load brain background
         
-        this.load.spritesheet('explosion', './assets/explosion.png',
+        /* this.load.spritesheet('explosion', './assets/explosion.png',
             {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('explosion1', './assets/explosion.png',
-            {frameWidth: 32, frameHeight: 16, startFrame: 0, endFrame: 9});
+            {frameWidth: 32, frameHeight: 16, startFrame: 0, endFrame: 9}); */
         
-        this.load.image('particle1', './assets/circle_03.png');
+        this.load.image('particle1', './assets/chargee.png');
         this.load.image('particle2', './assets/circle_02.png')
         this.load.image('particle3', './assets/circle_04.png')
         this.load.audio('background', './assets/background.wav')
         this.load.audio('memoryretrieved', './assets/memoryretrieved.wav')
 
+        this.sfxElectricity = this.sound.add('Particle Shot');
         
           
         }
@@ -42,7 +41,7 @@ class Play extends Phaser.Scene {
     create() {
     
     var music = this.sound.add('background');
-    //music.setLoop(true);
+    music.setLoop(true);
     music.play();
 
   
@@ -51,15 +50,9 @@ class Play extends Phaser.Scene {
             game.settings.spaceshipSpeed = game.settings.spaceshipSpeed*1.5;
         }, null, this);
     
-        
-        //game.debug.text('Press down arrow keys to move the tileSprite', 20, 20);
         // place tile sprite 
         this.brain = this.add.tileSprite(0, 0, 640, 480, 'brain').setOrigin(0, 0);
-        //this.brain.setTileScale(0.5, 0.5);
-        //this.brain = this.add.tileSprite(0, 0, 640, 480, 'brain');
-        
-        
-        
+
         this.explodeParticles = this.add.particles('particle1');
         this.explodeParticles1 = this.add.particles('particle2');
         this.explodeParticles2 = this.add.particles('particle3');
@@ -90,35 +83,29 @@ class Play extends Phaser.Scene {
 
         fireConfig.fixedWidth = 0;
 
-        this.iconTop = this.add.image(58, 54, 'transmitter').setScale(0.7, 0.7);
-        this.iconTop.alpha = 0;
-        //this.add.rectangle(260, 55, 100, 34, 0xF3B141).setOrigin(0, 0);
-        //this.add.rectangle(260, 55, 100, 34, 0xF3B141).setOrigin(0, 0);
         this.fire = this.add.text(360, 44, 'CHARGE', fireConfig).setOrigin(0.5);
         this.fire.setVisible(false);
+        
+        this.iconTop = this.add.image(58, 54, 'transmitter').setScale(0.7, 0.7);
+        this.iconTop.alpha = 0;
+        
+        this.electricIcon = this.add.image(600, 54, 'particle1');
+        this.electricIcon.alpha = 0.3;
+        this.electricIcon1 = this.add.image(558, 54, 'particle1');
+        this.electricIcon1.alpha = 0.3;
+        this.electricIcon2 = this.add.image(516, 54, 'particle1');
+        this.electricIcon2.alpha = 0.3;
+        this.electricIcon3 = this.add.image(474, 54, 'particle1');
+        this.electricIcon3.alpha = 0.3;
+        this.electricIcon4 = this.add.image(432, 54, 'particle1');
+        this.electricIcon4.alpha = 0.3;
 
         // add rocket (p1)
         this.p1Rocket = new Ion(this, game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
-        //this.p1Rocket = this.physics.add.sprite(game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
         this.p1Rocket.body.setCollideWorldBounds(false);
         this.p1Rocket.body.setAllowGravity(false);
         
-        
-        /* this.rockets = this.physics.add.group({
-            defaultKey: 'neurotransmitter',
-            maxSize: 10
-        }); */
-        //this.game.physics.gravity.y = 100;
-        //this.p1Rocket.game.physics.gravity.x = 100;
-
-    //  Sprite 1 will use the World (global) gravity
-        //this.p1Rocket = game.add.sprite('neurotransmitter');
-        //sprite1.body.collideWorldBounds = true;
-        //sprite1.body.bounce.y = 0.8;
-        //this.game.physics.enable(this.p1Rocket, Phaser.Physics.ARCADE);
-        //this.p1Rocket.setPosition(0 + ground.centerOfMass.x, 280 + ground.centerOfMass.y);
         // add 3 spaceships
-        
         this.ship01 = new Transmitter(this, game.config.width, 335, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship02 = new Transmitter(this, game.config.width, 275, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.ship03 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
@@ -186,13 +173,14 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
         
-        this.scoreLeft = this.add.text(515, 24, this.p1score, scoreConfig);
+        //this.scoreLeft = this.add.text(515, 24, this.p1score, scoreConfig);
         
 
         // game over flag
         this.gameOver = false;
 
-        
+        //this.didExplode = this.add.text()
+        //this.didExplode.setVisible(false);
 
 
         // 60-second play clock
@@ -202,39 +190,15 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or (M) to return to the Menu', scoreConfig2).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
-
-        /*if(localStorage.getItem(this.p1score != null)) {
-            let storedScore = parseInt(localStorage.getItem(this.p1score));
-            console.log(`storedScore: ${storedScore}`);
-            // see if current score is higher than stored score
-            if(level > storedScore) {
-                console.log(`New high score: ${level}`);
-                localStorage.setItem(this.p1score, level);
-                highScore = level;
-                newHighScore = true;
-            } else {
-                console.log('No new high score :/');
-                highScore = parseInt(localStorage.getItem(this.p1score));
-                newHighScore = false;
-            }
-        } else {
-            console.log('No high score stored. Creating new.');
-            highScore = level;
-            localStorage.setItem(this.p1score, highScore);
-            newHighScore = true;
-        } */
-    
-        /*if(this.p1score == 60) {
-            return this.gameOver = true;
-        }*/
     }
 
     update() {
-        // check key input for restart
-    
-        if(this.p1score >= 60) {
+        
+        // ends game at 60 pts
+        /* if(this.p1score >= 60) {
             this.gameOver = true;
-        }
+        } */
+
         let audioConfig = {
             mute: false,
             volume: 0.7,
@@ -269,35 +233,20 @@ class Play extends Phaser.Scene {
             
         }
         
-        /* function shoot() {
-            var rocket = this.rockets.get(rocket.x, rocket.y);
-            if (rocket) {
-                rocket.setActive(true);
-                rocket.setVisible(true);
-                rocket.body.velocity.y = -200;
-                rocket.body.velocity.x = -200;
-            }
-        } */
-
-
-            
         
-if(!this.gameOver) {
-        // update spaceships
-        this.ship01.update();
-        this.ship02.update();
-        this.ship03.update();
-        this.ship04.update();
-        this.ship05.update();
-        this.ship06.update();
-        //this.ship07.update();
-        //this.p1Rocket.update();
-        
-}
+        if(!this.gameOver) {
+            // update spaceships
+            this.ship01.update();
+            this.ship02.update();
+            this.ship03.update();
+            this.ship04.update();
+            this.ship05.update();
+            this.ship06.update();
+        }
+
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
             this.scene.restart(this.p1score);
-            
         }
 
 
@@ -310,21 +259,16 @@ if(!this.gameOver) {
             this.scene.start("menuScene");
             //this.scene.music.stop();
         }
+        
         /*if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
             this.brain.tilePositionX -= 2;
         } */
-        //this.inAir = false;
 
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
             this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
-            //this.inAir = true;
+            this.fire.setVisible(true);
             this.isFiring = true;
-            //this.scene.fire.setVisible(true)
-            //console.log(this.p1Rocket.body.velocity);
-            //console.log(this.p1Rocket.body.gravity);
-            //console.log(game.config.height);
-
-
+            this.sfxElectricity.play();
         }
 
         if(this.inAir && (Phaser.Input.Keyboard.JustDown(keyF))){
@@ -360,13 +304,13 @@ if(!this.gameOver) {
         if(this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
-            this.iconTop.alpha += 0.1;
+            this.iconTop.alpha += 0.2;
         }
         
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03); 
-            this.iconTop.alpha += 0.2;
+            this.iconTop.alpha += 0.1;
             // make second reset method so it will reset coming from other direction
         }
 
@@ -391,7 +335,7 @@ if(!this.gameOver) {
         }   
 
         if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
-            this.sound1.play(audioConfig);
+            this.sound1.play();
             this.iconTop.alpha = 1;
         }
         
@@ -504,10 +448,11 @@ if(!this.gameOver) {
             frequency: 0,
         }).explode();
          // reset ship position
-        //ship.destroy(true);
         
+        //this.didExplode.setVisible(true);
         this.icon = this.add.image(ship.x + 35, ship.y + 35, 'transmitter').setScale(0.5, 0.5);
-        ship.destroy();
+        ship.destroy(); // reset ship off-screen
+
         //this.ship.settings.spaceshipSpeed = 0;
         //boom.anims.play('explode'); // play explode animation
     }
@@ -522,10 +467,28 @@ if(!this.gameOver) {
         */
         // score incrememnt and repaint
         this.p1score += ship.points;
-        this.scoreLeft.text = this.p1score;
+        //this.scoreLeft.text = this.p1score;
 
+        // increase electric charge
+        if(this.p1score == 10) {
+            this.electricIcon.alpha = 1;
+        }
         
+        if(this.p1score == 20) {
+            this.electricIcon1.alpha = 1;
+        }
         
+        if(this.p1score == 30) {
+            this.electricIcon2.alpha = 1;
+        }
+
+        if(this.p1score == 40) {
+            this.electricIcon3.alpha = 1;
+        }
+
+        if(this.p1score == 50) {
+            this.electricIcon4.alpha = 1;
+        } 
 
         if(this.sound) {
             var x = Math.floor(Math.random() * 3);

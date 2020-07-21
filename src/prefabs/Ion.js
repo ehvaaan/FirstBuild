@@ -11,7 +11,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         this.isFiring = false;
 
         // add rocket sfx
-        this.sfxRocket = scene.sound.add('sfx_rocket');
+        //this.sfxRocket = scene.sound.add('Particle Shot');
 
         
         }
@@ -26,7 +26,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
             } else if(keyLEFT.isDown && this.x > game.config.width - game.config.width) {
                 this.x -= 2;
             }
-            //this.scene.fire.setVisible(false);
+            
         }
         
         // fire button
@@ -34,11 +34,11 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         /*if(Phaser.Input.Keyboard.JustDown(keyF)) {
             
         } */
-        if(!this.isFiring && (Phaser.Input.Keyboard.JustDown(keyF))) {
+        if(Phaser.Input.Keyboard.JustDown(keyF) && this.isFiring == true) {
             
             console.log(this.y);
-            this.sfxRocket.play();
-            this.scene.fire.setVisible(true);
+            //this.sfxRocket.play();
+            //this.scene.fire.setVisible(true);
         
             //this.isFiring = false;
             //this.shoot(this);
@@ -91,7 +91,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
     // reset rocket to "ground" if collision occurs
     reset() {
         //console.log(game.config.height);
-        this.isFiring = false;
+        this.fire = false;
         this.body.setAllowGravity(false).setVelocity(0);
         this.y = 450;
         this.x = game.config.width - game.config.width;

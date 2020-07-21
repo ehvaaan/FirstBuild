@@ -10,7 +10,7 @@ class Menu extends Phaser.Scene {
     this.load.audio('target1', './assets/target1.wav' );
     this.load.audio('target2', './assets/target2.wav' );
     this.load.audio('target4', './assets/target3.wav' );
-    this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+    this.load.audio('Particle Shot', './assets/Particle Shot.wav');
     this.load.image('transmitter', './assets/transmitter.png');
     //this.load.audio('background', './assets/background.wav')
 }

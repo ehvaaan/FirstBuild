@@ -41,5 +41,6 @@ class Transmitter extends Phaser.GameObjects.Sprite {
     destroy() {
         this.x = 800;
         this.y = 800;
+        //this.didExplode.setVisible(false);
     }
 }
