@@ -14,7 +14,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         this.sfxRocket = scene.sound.add('sfx_rocket');
 
         
-         }
+        }
     
     
 
@@ -26,24 +26,26 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
             } else if(keyLEFT.isDown && this.x > game.config.width - game.config.width) {
                 this.x -= 2;
             }
+            this.scene.fire.setVisible(false);
         }
         
         // fire button
-        if(Phaser.Input.Keyboard.JustDown(keyF)) {
+        
+        /*if(Phaser.Input.Keyboard.JustDown(keyF)) {
             
-            this.isFiring = true;
+        } */
+        if(!this.isFiring) {
             
-            if(this.isFiring == true && this.x == game.config.width - game.config.width) {
             console.log(this.y);
             this.sfxRocket.play();
             this.scene.fire.setVisible(true);
-        }
-            this.isFiring = false;
+        
+            //this.isFiring = false;
             //this.shoot(this);
             //scene.add.text(69, 54, 'FIRE!', scoreConfig);
             // play sfx
            
-        }
+        } 
         
         
         if(this.isFiring = true) {
@@ -81,8 +83,8 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         if((this.y > 490) || (this.y < 0) || (this.x > game.config.width)){
             console.log(this.y);
             this.reset();
-            this.isFiring = false;
-            this.scene.fire.setVisible(false);
+            //this.isFiring = false;
+            //this.scene.fire.setVisible(false);
         }
 
     }

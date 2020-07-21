@@ -330,12 +330,12 @@ if(!this.gameOver) {
         /*if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
             this.brain.tilePositionX -= 2;
         } */
-        this.inAir = false;
+        //this.inAir = false;
 
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
             this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
-            this.inAir = true;
-            //this.isFiring = true;
+            //this.inAir = true;
+            this.isFiring = true;
             //this.scene.fire.setVisible(true)
             //console.log(this.p1Rocket.body.velocity);
             //console.log(this.p1Rocket.body.gravity);
