@@ -22,8 +22,8 @@ class Play extends Phaser.Scene {
             {frameWidth: 32, frameHeight: 16, startFrame: 0, endFrame: 9}); */
         
         this.load.image('particle1', './assets/chargee.png');
-        this.load.image('particle2', './assets/circle_02.png')
-        this.load.image('particle3', './assets/circle_04.png')
+        this.load.image('particle2', './assets/bluechargee.png')
+        this.load.image('particle3', './assets/bluecharge22.png')
         this.load.audio('background', './assets/background.wav')
         this.load.audio('memoryretrieved', './assets/memoryretrieved.wav')
 
@@ -493,9 +493,9 @@ class Play extends Phaser.Scene {
         if(this.sound) {
             var x = Math.floor(Math.random() * 3);
             if(x == 0){
-                this.sound.play('target');
+                this.sound.play('charged');
             } else if(x == 1) {
-                this.sound.play('target1');
+                this.sound.play('charge1');
             } else if(x == 2) {
                 this.sound.play('target2');
             } else if(x == 3) {
