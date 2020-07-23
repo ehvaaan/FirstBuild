@@ -40,13 +40,12 @@ class Play extends Phaser.Scene {
     
     create() {
     
-    var music = this.sound.add('background');
-    music.setLoop(true);
-    music.play();
+    this.music = this.sound.add('background');
+    this.music.setLoop(true);
+    this.music.play();
 
-  
-
-        this.clock1 = this.time.delayedCall(30000, () => {
+    // 60s playclock
+    this.clock1 = this.time.delayedCall(30000, () => {
             game.settings.spaceshipSpeed = game.settings.spaceshipSpeed*1.5;
         }, null, this);
     
@@ -83,7 +82,7 @@ class Play extends Phaser.Scene {
 
         fireConfig.fixedWidth = 0;
 
-        this.fire = this.add.text(360, 44, 'CHARGE', fireConfig).setOrigin(0.5);
+        this.fire = this.add.text(300, 44, 'CHARGE', fireConfig).setOrigin(0.5);
         this.fire.setVisible(false);
         
         this.iconTop = this.add.image(58, 54, 'transmitter').setScale(0.7, 0.7);
@@ -114,7 +113,44 @@ class Play extends Phaser.Scene {
         this.ship06 = new SmallShip(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
         //this.ship07 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
 
+        let timeConfig = {
+            //fontFamily: 'Georgia',
+            fontSize: '22px',
+            //backgroundColor: '#FFFFFF',
+            //color: '#000000',
+            //align: 'center',
+            //padding: {
+            //    top: 5,
+            //    bottom: 5,
+            //},
+            //fixedWidth: 100
+        }
+    
+        console.log('create');
+        // 2:30 in seconds
+        this.initialTime = 60;
+    
+        this.text = this.add.text(360, 10, 'Memory lost in: ' + formatTime(this.initialTime), timeConfig);
+    
+        // Each 1000 ms call onEvent
+        this.timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
+    
+        function formatTime(seconds){
+            // Minutes
+            var minutes = Math.floor(seconds/60);
+            // Seconds
+            var partInSeconds = seconds%60;
+            // Adds left zeros to seconds
+            partInSeconds = partInSeconds.toString().padStart(2,'0');
+            // Returns formated time
+            return `${minutes}:${partInSeconds}`;
+        }
         
+        function onEvent ()
+    {
+        this.initialTime -= 1; // One second
+        this.text.setText('Memory lost in: ' + formatTime(this.initialTime), timeConfig);
+    }
 
         //this.p1Rocket.body.collideWorldBounds = true;
         //this.p1Rocket.bounce.y = 0.8;
@@ -190,7 +226,12 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or (M) to return to the Menu', scoreConfig2).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+    
+            
+        
     }
+
+    
 
     update() {
         
@@ -207,9 +248,8 @@ class Play extends Phaser.Scene {
             seek: 0,
             loop: false,
             delay: 0
-            
         }
-        
+
         let scoreConfig = {
             fontFamily: 'Georgia',
             fontSize: '28px',
@@ -257,7 +297,7 @@ class Play extends Phaser.Scene {
         // QUIT option - music needs to restart
         if(!this.gameOver && Phaser.Input.Keyboard.JustDown(keyQ)) {
             this.scene.start("menuScene");
-            //this.scene.music.stop();
+            this.music.stop();
         }
         
         /*if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
@@ -495,7 +535,7 @@ class Play extends Phaser.Scene {
             if(x == 0){
                 this.sound.play('charged');
             } else if(x == 1) {
-                this.sound.play('charge1');
+                this.sound.play('charge2');
             } else if(x == 2) {
                 this.sound.play('target2');
             } else if(x == 3) {
