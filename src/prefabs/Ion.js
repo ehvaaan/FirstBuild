@@ -1,3 +1,4 @@
+var jumpTimer = 0;
 // Rocket prefab
 class Ion extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) { 
@@ -22,13 +23,41 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         // left/right movement
         if(this.isFiring) {
             if(keyRIGHT.isDown && this.x <= 578) {
-                this.x += 2;
-            } else if(keyLEFT.isDown && this.x > game.config.width - game.config.width) {
-                this.x -= 2;
+                this.body.velocity.x = 300;
+            } else if(keyLEFT.isDown && this.x > 0) {
+                this.body.velocity.x = -300;
             }
             
         }
-        
+
+        /* if(this.isFiring) {
+            if(keyRIGHT.isDown && this.x <= 578) {
+                this.body.velocity.x = 300;
+            } else if(keyLEFT.isDown && this.x > game.config.width - game.config.width) {
+                this.body.velocity.x = -300;
+            } else {
+                this.body.velocity.x = 0;
+            }
+            
+        } */
+       
+       /* if ((!this.gameOver) && !this.isFiring) {
+            this.body.setAllowGravity(true);
+              if (this.body.touching.down && jumpTimer === 0) {
+                  // jump is allowed to start
+                  jumpTimer = 1;
+                  //this.p1Rocket.body.velocity.x = 400;
+                  this.p1Rocket.body.velocity.y = -500;
+              } else if (jumpTimer > 0 && jumpTimer < 31) {
+                  // keep jumping higher
+                  jumpTimer++;
+                  //this.p1Rocket.body.velocity.x = 400 + (jumpTimer * 5);
+                  this.body.velocity.y = -500 + (jumpTimer * 5);  
+                }   
+          }  else {
+              // jump button not being pressed, reset jump timer
+              jumpTimer = 0;
+          } */ 
         // fire button
         
         /*if(Phaser.Input.Keyboard.JustDown(keyF)) {
@@ -80,7 +109,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         
         
         // reset on miss - if this was greater than, it would constantly reset
-        if((this.y > 490) || (this.y < 0) || (this.x > game.config.width)){
+        if((this.y > 490) || (this.y < 0) || (this.x > game.config.width) || (this.x < 0)){
             console.log(this.y);
             this.reset();
             //this.isFiring = false;
@@ -94,7 +123,8 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         this.fire = false;
         this.body.setAllowGravity(false).setVelocity(0);
         this.y = 450;
-        this.x = game.config.width - game.config.width;
+        var xx = Phaser.Math.Between(game.config.width - game.config.width, 620);
+        this.x = xx;
         this.scene.fire.setVisible(false);
     }
 }

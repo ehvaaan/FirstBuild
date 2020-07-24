@@ -1,8 +1,4 @@
-//var cursors;
-var arrow;
-var ball;
-var catchFlag = false;
-var launchVelocity = 0;
+var jumpTimer = 0;
 
 class Play extends Phaser.Scene { 
     constructor() {
@@ -15,7 +11,8 @@ class Play extends Phaser.Scene {
         this.load.image('transmitter', './assets/transmitter.png');
         this.load.image('receptor', './assets/receptor.png');
         this.load.image('brain', './assets/brain.png'); // load brain background
-        
+        this.load.image('chain', './assets/neuronchain.png'); // load brain background
+
         /* this.load.spritesheet('explosion', './assets/explosion.png',
             {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('explosion1', './assets/explosion.png',
@@ -99,8 +96,10 @@ class Play extends Phaser.Scene {
         this.electricIcon4 = this.add.image(432, 54, 'particle1');
         this.electricIcon4.alpha = 0.3;
 
+        // random x position for player to start
+        var xx = Phaser.Math.Between(game.config.width - game.config.width, game.config.width);
         // add rocket (p1)
-        this.p1Rocket = new Ion(this, game.config.width - game.config.width, 450, 'neurotransmitter').setOrigin(0, 0);
+        this.p1Rocket = new Ion(this, xx, 450, 'neurotransmitter').setOrigin(0, 0);
         this.p1Rocket.body.setCollideWorldBounds(false);
         this.p1Rocket.body.setAllowGravity(false);
         
@@ -304,12 +303,40 @@ class Play extends Phaser.Scene {
             this.brain.tilePositionX -= 2;
         } */
 
+        
+               
+          /* if ((!this.gameOver) && (keyF.isDown)) {
+            this.p1Rocket.body.setAllowGravity(true);
+              if (this.p1Rocket.body.touching.down && jumpTimer === 0) {
+                  // jump is allowed to start
+                  jumpTimer = 1;
+                  //this.p1Rocket.body.velocity.x = 400;
+                  this.p1Rocket.body.velocity.y = -500;
+              } else if (jumpTimer > 0 && jumpTimer < 31) {
+                  // keep jumping higher
+                  jumpTimer++;
+                  //this.p1Rocket.body.velocity.x = 400 + (jumpTimer * 5);
+                  this.p1Rocket.body.velocity.y = -500 + (jumpTimer * 5);  
+                }   
+          }  else {
+              // jump button not being pressed, reset jump timer
+              jumpTimer = 0;
+          } */
+      
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
-            this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
-            this.fire.setVisible(true);
-            this.isFiring = true;
-            this.sfxElectricity.play();
-        }
+            if(keyLEFT.isDown) {
+                this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
+                this.fire.setVisible(true);
+                this.isFiring = true;
+                this.sfxElectricity.play();
+            } else if(keyRIGHT.isDown) {
+                this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
+                this.fire.setVisible(true);
+                this.isFiring = true;
+                this.sfxElectricity.play();
+            }
+        
+    } 
 
         if(this.inAir && (Phaser.Input.Keyboard.JustDown(keyF))){
             this.p1Rocket.body.setAllowGravity(false).setVelocity(0);
@@ -341,11 +368,17 @@ class Play extends Phaser.Scene {
             this.ship02.update(); */
         }
         
+        
+
         if(this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
             this.iconTop.alpha += 0.2;
+            //this.iconChain = this.add.image(ship.x + 152, ship.y + 132, 'chain').setScale(0.3, 0.3);
+
         }
+
+        
         
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
@@ -412,6 +445,11 @@ class Play extends Phaser.Scene {
             return false;
         }
     } 
+
+    /* setChain(ship, ship) {
+            this.icon = this.add.image(ship.x + 10, ship.y + 15, 'transmitter').setScale(0.3, 0.3);
+            let space1 = this.ship02;
+    } */
 
     shipExplode(ship) {
         // temporarily hide ship
