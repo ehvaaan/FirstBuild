@@ -49,15 +49,15 @@ class Menu extends Phaser.Scene {
 
     // white backings
     this.add.rectangle(178, 80, 281, 65, 0xFFFFFF).setOrigin(0, 0);
-    this.add.rectangle(148, 400, 342, 65, 0xFFFFFF).setOrigin(0, 0);
-    this.add.rectangle(80, 207, 480, 65, 0xFFFFFF).setOrigin(0, 0);
+    this.add.rectangle(165, 400, 310, 65, 0xFFFFFF).setOrigin(0, 0);
+    this.add.rectangle(55, 207, 530, 65, 0xFFFFFF).setOrigin(0, 0);
     //this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
     //menuConfig.backgroundColor = '#00FF00';
     //menuConfig.color = '#000';
     this.add.text(centerX, centerY - textSpacer*2, 'NEURO SIMULATOR', menuConfig).setOrigin(0.5);
     //menuConfig.backgroundColor = '#F3B141';
     //menuConfig.color = '#000';
-    this.add.text(centerX, centerY, 'Use the ← → arrows to move & (F) to Fire', menuConfig).setOrigin(0.5);
+    this.add.text(centerX, centerY, 'Use the ⇦ ⇨ arrows to move + [SPACE] to fire', menuConfig).setOrigin(0.5);
     //menuConfig.backgroundColor = '#93C47D';
     //menuConfig.color = '#000';
     /* this.add.text(centerX, centerY + textSpacer, 'Press ← for Easy', menuConfig).setOrigin(0.5);
@@ -67,7 +67,7 @@ class Menu extends Phaser.Scene {
     */
     //menuConfig.backgroundColor = '#F3B141';
     //menuConfig.color = '#000';
-    this.add.text(centerX, centerY + textSpacer*3, 'Press [Space Bar] to continue', menuConfig).setOrigin(0.5);
+    this.add.text(centerX, centerY + textSpacer*3, 'Press [SPACE] to continue', menuConfig).setOrigin(0.5);
     
     
     this.icon = this.add.image(57, 54, 'transmitter', menuConfig).setScale(1, 1);
@@ -100,7 +100,7 @@ class Menu extends Phaser.Scene {
             }
                 
         //this.sound.play('sfx_select');
-        this.scene.start("playScene");
+        this.scene.start("whatScene");
 
         }
         /* if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {

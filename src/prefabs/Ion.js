@@ -63,7 +63,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         /*if(Phaser.Input.Keyboard.JustDown(keyF)) {
             
         } */
-        if(Phaser.Input.Keyboard.JustDown(keyF) && this.isFiring == true) {
+        if(Phaser.Input.Keyboard.JustDown(keySPACE) && this.isFiring == true) {
             
             console.log(this.y);
             //this.sfxRocket.play();

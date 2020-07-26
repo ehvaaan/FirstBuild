@@ -7,9 +7,8 @@ class Play extends Phaser.Scene {
     
     preload () {
         //load images and tile sprites
-        this.load.image('neurotransmitter', './assets/neurotransmitter.png');
+        this.load.image('neurotransmitter', './assets/Ion.png');
         this.load.image('transmitter', './assets/transmitter.png');
-        this.load.image('receptor', './assets/receptor.png');
         this.load.image('brain', './assets/brain.png'); // load brain background
         this.load.image('chain', './assets/neuronchain.png'); // load brain background
 
@@ -99,7 +98,7 @@ class Play extends Phaser.Scene {
         // random x position for player to start
         var xx = Phaser.Math.Between(game.config.width - game.config.width, game.config.width);
         // add rocket (p1)
-        this.p1Rocket = new Ion(this, xx, 450, 'neurotransmitter').setOrigin(0, 0);
+        this.p1Rocket = new Ion(this, xx, 450, 'neurotransmitter').setScale(0.6, 0.6).setOrigin(0, 0);
         this.p1Rocket.body.setCollideWorldBounds(false);
         this.p1Rocket.body.setAllowGravity(false);
         
@@ -174,6 +173,7 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         
         
@@ -293,6 +293,8 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
+        
+
         // QUIT option - music needs to restart
         if(!this.gameOver && Phaser.Input.Keyboard.JustDown(keyQ)) {
             this.scene.start("menuScene");
@@ -323,7 +325,7 @@ class Play extends Phaser.Scene {
               jumpTimer = 0;
           } */
       
-        if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyF))) {
+        if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keySPACE))) {
             if(keyLEFT.isDown) {
                 this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
                 this.fire.setVisible(true);
@@ -338,9 +340,7 @@ class Play extends Phaser.Scene {
         
     } 
 
-        if(this.inAir && (Phaser.Input.Keyboard.JustDown(keyF))){
-            this.p1Rocket.body.setAllowGravity(false).setVelocity(0);
-        }
+       
         
        if(!this.gameOver) {
             this.p1Rocket.update();
@@ -383,20 +383,20 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03); 
-            this.iconTop.alpha += 0.1;
+            this.iconTop.alpha += 0.2;
             // make second reset method so it will reset coming from other direction
         }
 
         if(this.checkCollision(this.p1Rocket, this.ship04)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship04);
-            this.iconTop.alpha += 0.1;
+            this.iconTop.alpha += 0.2;
         }   
 
         if(this.checkCollision(this.p1Rocket, this.ship05)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship05);
-            this.iconTop.alpha += 0.1;
+            this.iconTop.alpha += 0.2;
         }
         
         this.sound1 = this.sound.add('memoryretrieved', audioConfig);
@@ -404,13 +404,16 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.p1Rocket, this.ship06)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship06);
-            this.iconTop.alpha += 0.1;
+            this.iconTop.alpha += 0.2;
         }   
 
-        if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
+        if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.8)) {
             this.sound1.play();
             this.iconTop.alpha = 1;
-        }
+            //this.scene.start("winScene");
+        } /* else {
+            this.scene.start("loseScene");
+        } */
         
         
         /* if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
