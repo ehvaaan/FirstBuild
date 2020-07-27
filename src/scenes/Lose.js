@@ -62,7 +62,7 @@ class Lose extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.scene.start("playScene")
         }
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyM)) {
+        if(Phaser.Input.Keyboard.JustDown(keyM)) {
             this.scene.start("menuScene");
         }
     }

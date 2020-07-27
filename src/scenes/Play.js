@@ -1,5 +1,3 @@
-var jumpTimer = 0;
-
 class Play extends Phaser.Scene { 
     constructor() {
         super("playScene")
@@ -11,11 +9,6 @@ class Play extends Phaser.Scene {
         this.load.image('transmitter', './assets/transmitter.png');
         this.load.image('brain', './assets/brain.png'); // load brain background
         this.load.image('chain', './assets/neuronchain.png'); // load brain background
-
-        /* this.load.spritesheet('explosion', './assets/explosion.png',
-            {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-        this.load.spritesheet('explosion1', './assets/explosion.png',
-            {frameWidth: 32, frameHeight: 16, startFrame: 0, endFrame: 9}); */
         
         this.load.image('particle1', './assets/chargee.png');
         this.load.image('particle2', './assets/bluechargee.png')
@@ -44,7 +37,7 @@ class Play extends Phaser.Scene {
 
     // 60s playclock
     this.clock1 = this.time.delayedCall(30000, () => {
-            game.settings.spaceshipSpeed = game.settings.spaceshipSpeed*1.5;
+            game.settings.spaceneuronSpeed = game.settings.spaceneuronSpeed*1.5;
         }, null, this);
     
         // place tile sprite 
@@ -117,31 +110,21 @@ class Play extends Phaser.Scene {
 
         // random x position for player to start
         var xx = Phaser.Math.Between(game.config.width - game.config.width, game.config.width);
-        // add rocket (p1)
-        this.p1Rocket = new Ion(this, xx, 450, 'neurotransmitter').setScale(0.6, 0.6).setOrigin(0, 0);
-        this.p1Rocket.body.setCollideWorldBounds(false);
-        this.p1Rocket.body.setAllowGravity(false);
+        // add ion (p1)
+        this.p1Ion = new Ion(this, xx, 450, 'neurotransmitter').setScale(0.6, 0.6).setOrigin(0, 0);
+        this.p1Ion.body.setCollideWorldBounds(false);
+        this.p1Ion.body.setAllowGravity(false);
         
-        // add 3 spaceships
-        this.ship01 = new Transmitter(this, game.config.width, 335, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.ship02 = new Transmitter(this, game.config.width, 275, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.ship03 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.ship04 = new Transmitter(this, game.config.width, 155, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.ship05 = new Transmitter(this, game.config.width, 95, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.ship06 = new SmallShip(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
-        //this.ship07 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        // add 3 spaceneurons
+        this.neuron01 = new Transmitter(this, game.config.width, 335, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron02 = new Transmitter(this, game.config.width, 275, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron03 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron04 = new Transmitter(this, game.config.width, 155, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron05 = new Transmitter(this, game.config.width, 95, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron06 = new SmallNeuron(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
 
         let timeConfig = {
-            //fontFamily: 'Georgia',
             fontSize: '22px',
-            //backgroundColor: '#FFFFFF',
-            //color: '#000000',
-            //align: 'center',
-            //padding: {
-            //    top: 5,
-            //    bottom: 5,
-            //},
-            //fixedWidth: 100
         }
     
         console.log('create');
@@ -164,29 +147,12 @@ class Play extends Phaser.Scene {
             return `${minutes}:${partInSeconds}`;
         }
         
-        function onEvent ()
-    {
-        this.initialTime -= 1; // One second
-        this.text.setText('Memory lost in: ' + formatTime(this.initialTime), timeConfig);
-    }
+        function onEvent () {
+            this.initialTime -= 1; // One second
+            this.text.setText('Memory lost in: ' + formatTime(this.initialTime), timeConfig);
+        }
 
-        //this.p1Rocket.body.collideWorldBounds = true;
-        //this.p1Rocket.bounce.y = 0.8;
         
-        /*sprite2.body.collideWorldBounds = true;
-        sprite2.body.bounce.y = 0.8;
-        sprite2.body.gravity.y = 200;
-        
-        sprite3.body.collideWorldBounds = true;
-        sprite3.body.bounce.y = 0.8;
-        sprite3.body.gravity.y = 50;
-    
-        sprite4.body.allowGravity = false;*/
-
-        // display timer
-        //this.timeLeft = this.add.text(69, 54, this.game.settings.gameTimer.duration, fireConfig);        
-        //this.timeLeft.setVisible(true);
-
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -196,50 +162,13 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         
-        
-
         // score
         this.p1score = 0;
-
-        // score display
-        let scoreConfig = {
-            fontFamily: 'Georgia',
-            fontSize: '28px',
-            backgroundColor: '#FFFFFF',
-            color: '#000000',
-            align: 'center',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 100
-        }
         
-        let scoreConfig2 = {
-            fontFamily: 'Georgia',
-            fontSize: '24px',
-            backgroundColor: '#FFFFFF',
-            color: '#843605',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
-        
-        //this.scoreLeft = this.add.text(515, 24, this.p1score, scoreConfig);
-        
-
         // game over flag
         this.gameOver = false;
 
-        //this.didExplode = this.add.text()
-        //this.didExplode.setVisible(false);
-
-
         // 60-second play clock
-        scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             //this.gameOver = true;
             this.scene.start("loseScene");
@@ -253,11 +182,6 @@ class Play extends Phaser.Scene {
 
     update() {
         
-        // ends game at 60 pts
-        /* if(this.p1score >= 60) {
-            this.gameOver = true;
-        } */
-
         let audioConfig = {
             mute: false,
             volume: 0.7,
@@ -268,42 +192,18 @@ class Play extends Phaser.Scene {
             delay: 0
         }
 
-        let scoreConfig = {
-            fontFamily: 'Georgia',
-            fontSize: '28px',
-            backgroundColor: '#FFFFFF',
-            color: '#000000',
-            align: 'center',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
-
-        //scoreConfig.fixedWidth = 0;
-
-        if(this.gameOver) {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or (M) to return to the Menu', scoreConfig).setOrigin(0.5);
-            
-            this.sound.add('memoryretrieved', audioConfig);
-            
-        }
-        
-        
         if(!this.gameOver) {
-            // update spaceships
-            this.ship01.update();
-            this.ship02.update();
-            this.ship03.update();
-            this.ship04.update();
-            this.ship05.update();
-            this.ship06.update();
+            // update neurons
+            this.neuron01.update();
+            this.neuron02.update();
+            this.neuron03.update();
+            this.neuron04.update();
+            this.neuron05.update();
+            this.neuron06.update();
         }
 
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
-            game.settings.spaceshipSpeed = game.settings.spaceshipSpeed/1.5;
+            game.settings.spaceneuronSpeed = game.settings.spaceneuronSpeed/1.5;
             this.scene.restart(this.p1score);
         }
 
@@ -320,38 +220,15 @@ class Play extends Phaser.Scene {
             this.music.stop();
         }
         
-        /*if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keyLEFT) || (keyLEFT.isDown))) {
-            this.brain.tilePositionX -= 2;
-        } */
-
         
-               
-          /* if ((!this.gameOver) && (keyF.isDown)) {
-            this.p1Rocket.body.setAllowGravity(true);
-              if (this.p1Rocket.body.touching.down && jumpTimer === 0) {
-                  // jump is allowed to start
-                  jumpTimer = 1;
-                  //this.p1Rocket.body.velocity.x = 400;
-                  this.p1Rocket.body.velocity.y = -500;
-              } else if (jumpTimer > 0 && jumpTimer < 31) {
-                  // keep jumping higher
-                  jumpTimer++;
-                  //this.p1Rocket.body.velocity.x = 400 + (jumpTimer * 5);
-                  this.p1Rocket.body.velocity.y = -500 + (jumpTimer * 5);  
-                }   
-          }  else {
-              // jump button not being pressed, reset jump timer
-              jumpTimer = 0;
-          } */
-      
         if((!this.gameOver) && (Phaser.Input.Keyboard.JustDown(keySPACE))) {
             if(keyLEFT.isDown) {
-                this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
+                this.p1Ion.body.setAllowGravity(true).setVelocity(400, -500);
                 this.fire.setVisible(true);
                 this.isFiring = true;
                 this.sfxElectricity.play();
             } else if(keyRIGHT.isDown) {
-                this.p1Rocket.body.setAllowGravity(true).setVelocity(400, -500);
+                this.p1Ion.body.setAllowGravity(true).setVelocity(400, -500);
                 this.fire.setVisible(true);
                 this.isFiring = true;
                 this.sfxElectricity.play();
@@ -362,7 +239,7 @@ class Play extends Phaser.Scene {
        
         
        if(!this.gameOver) {
-            this.p1Rocket.update();
+            this.p1Ion.update();
         }
 
        
@@ -374,48 +251,39 @@ class Play extends Phaser.Scene {
         
         
         
-        if(this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
-            //this.scene.destroy(this.ship01);
-            this.shipExplode(this.ship01);
+        if(this.checkCollision(this.p1Ion, this.neuron01)) {
+            this.p1Ion.reset();
+            this.neuronExplode(this.neuron01);
             this.iconTop.alpha += 0.1;
-            //this.remove(this.ship01, true, true);
-            //this.ship01.destroy(true);
-            //this.ship01.reset();
-            /* this.ship02 = new Transmitter(this, game.config.width, 275, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-            this.ship02.spaceshipSpeed -= game.settings.spaceshipSpeed;
-            this.ship02.update(); */
         }
         
         
 
-        if(this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
-            this.iconTop.alpha += 0.2;
-            //this.iconChain = this.add.image(ship.x + 152, ship.y + 132, 'chain').setScale(0.3, 0.3);
-
-        }
-
-        
-        
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship03); 
+        if(this.checkCollision(this.p1Ion, this.neuron02)) {
+            this.p1Ion.reset();
+            this.neuronExplode(this.neuron02);
             this.iconTop.alpha += 0.1;
-            // make second reset method so it will reset coming from other direction
+            //this.iconChain = this.add.image(neuron.x + 152, neuron.y + 132, 'chain').setScale(0.3, 0.3);
         }
 
-        if(this.checkCollision(this.p1Rocket, this.ship04)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship04);
-            this.iconTop.alpha += 0.2;
+        
+        
+        if(this.checkCollision(this.p1Ion, this.neuron03)) {
+            this.p1Ion.reset();
+            this.neuronExplode(this.neuron03); 
+            this.iconTop.alpha += 0.1;
+        }
+
+        if(this.checkCollision(this.p1Ion, this.neuron04)) {
+            this.p1Ion.reset();
+            this.neuronExplode(this.neuron04);
+            this.iconTop.alpha += 0.1;
         }   
 
-        if(this.checkCollision(this.p1Rocket, this.ship05)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship05);
-            this.iconTop.alpha += 0.2;
+        if(this.checkCollision(this.p1Ion, this.neuron05)) {
+            this.p1Ion.reset();
+            this.neuronExplode(this.neuron05);
+            this.iconTop.alpha += 0.1;
         }
         
         this.sound1 = this.sound.add('memoryretrieved', audioConfig);
@@ -424,21 +292,21 @@ class Play extends Phaser.Scene {
         
         if(this.p1score == 50 && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.isCharged = true;
+            this.iconTop.alpha = 1.5;
             this.power.play();
             this.charged.setVisible(false);
         }
 
-        if(this.checkCollision(this.p1Rocket, this.ship06)) {
+        if(this.checkCollision(this.p1Ion, this.neuron06)) {
             
-            this.iconTop.alpha += 0.2;
-            this.shipExplode(this.ship06);
+            this.neuronExplode(this.neuron06);
         
             if(this.isCharged) {
             this.music.stop();
             this.sound1.play();
             this.cameras.main.fadeOut(1000, 0, 0, 0)
-                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                    this.scene.start("winScene");
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start("winScene");
                 })
         }  else if (!this.isCharged) {
             this.music.stop();
@@ -446,58 +314,13 @@ class Play extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0)
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.scene.start("loseScene");
-        })
+        })  }
         }
-    }
-        /*if(this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 1)) {
-                this.sound1.play();
-                this.cameras.main.fadeOut(1000, 0, 0, 0)
-                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                    this.scene.start("winScene");
-                })
-            } else if(!this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 1)) {
-            this.music.stop();
-            this.cameras.main.fadeOut(1000, 0, 0, 0)
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start("loseScene");
-        })
-        }   */
-    
-
-        /* if(this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 0.8)) {
-            //this.sound1.play();
-            //this.iconTop.alpha = 1;
-            //fade to black
-            console.log(game.config.height);
-            this.sound1 = this.sound.add('memoryretrieved', audioConfig);
-
-            this.cameras.main.fadeOut(1000, 0, 0, 0)
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start("winScene");
-        }) } else if(!this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 0.8)) {
-            this.music.stop();
-            //fade to black
-            this.cameras.main.fadeOut(1000, 0, 0, 0)
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start("loseScene");
-        })
-    
-        } */ 
-        
-        
-        /* if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
-            
-        } */
-        /* if(this.checkCollision(this.p1Rocket, this.ship07)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship07);
-        } */
-        // check collision for second time and reset coming from other direction
     }
 
         // simple AABB bounds checking - do they overlap
-    checkCollision(rocket, ship) {
-        if(rocket.x < ship.x + ship.width * ship.scale && rocket.x + rocket.width * rocket.scale > ship.x && rocket.y < ship.y + ship.height * ship.scale && rocket.height * rocket.scale + rocket.y > ship.y) {
+    checkCollision(ion, neuron) {
+        if(ion.x < neuron.x + neuron.width * neuron.scale && ion.x + ion.width * ion.scale > neuron.x && ion.y < neuron.y + neuron.height * neuron.scale && ion.height * ion.scale + ion.y > neuron.y) {
             
             return true;
             
@@ -508,8 +331,8 @@ class Play extends Phaser.Scene {
 
     
     
-   checkTopCollision(icon, ship) {
-        if(icon.x < ship.x + ship.width * ship.scale && icon.x + icon.width * icon.scale > ship.x && icon.y < ship.y + ship.height * ship.scale && icon.height * icon.scale + icon.y > ship.y) {
+   checkTopCollision(icon, neuron) {
+        if(icon.x < neuron.x + neuron.width * neuron.scale && icon.x + icon.width * icon.scale > neuron.x && icon.y < neuron.y + neuron.height * neuron.scale && icon.height * icon.scale + icon.y > neuron.y) {
             //icon.alpha += 0.2;
             return true;
             
@@ -518,21 +341,16 @@ class Play extends Phaser.Scene {
         }
     } 
 
-    /* setChain(ship, ship) {
-            this.icon = this.add.image(ship.x + 10, ship.y + 15, 'transmitter').setScale(0.3, 0.3);
-            let space1 = this.ship02;
+    /* setChain(neuron, neuron) {
+            this.icon = this.add.image(neuron.x + 10, neuron.y + 15, 'transmitter').setScale(0.3, 0.3);
+            let space1 = this.neuron02;
     } */
 
-    shipExplode(ship) {
-        // temporarily hide ship
-        
-        // create explosion sprite at ship's position
-        //let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        
-        if(ship.isSmallShip()) {
+    neuronExplode(neuron) {
+        if(neuron.isSmallNeuron()) {
             this.explodeParticles.createEmitter({
-                x: ship.x, 
-                y: ship.y,
+                x: neuron.x, 
+                y: neuron.y,
                 lifespan: 1000,
                 speed: { min: 20, max: 100},
                 gravityY: 300,
@@ -542,8 +360,8 @@ class Play extends Phaser.Scene {
             }).explode();
     
             this.explodeParticles1.createEmitter({
-                x: ship.x, 
-                y: ship.y,
+                x: neuron.x, 
+                y: neuron.y,
                 lifespan: 1000,
                 speed: { min: 20, max: 100},
                 gravityY: 300,
@@ -553,8 +371,8 @@ class Play extends Phaser.Scene {
             }).explode();
     
             this.explodeParticles2.createEmitter({
-                x: ship.x, 
-                y: ship.y,
+                x: neuron.x, 
+                y: neuron.y,
                 lifespan: 2000,
                 speed: { min: 20, max: 100},
                 gravityY: 300,
@@ -562,15 +380,13 @@ class Play extends Phaser.Scene {
                 frequency: 0,
                 scale: 0.5
             }).explode();
-            this.icon = this.add.image(ship.x + 10, ship.y + 15, 'transmitter').setScale(0.3, 0.3);
-            ship.destroy(); // reset ship position
-            //ship.alpha = 1;
-            //boom.anims.play('explode').setScale(0.5, 0.5); // play explode animation
+            this.icon = this.add.image(neuron.x + 10, neuron.y + 15, 'transmitter').setScale(0.3, 0.3);
+            neuron.destroy(); // reset neuron position
         } 
-        if(!ship.isSmallShip()) {
+        if(!neuron.isSmallNeuron()) {
         this.explodeParticles.createEmitter({
-            x: ship.x, 
-            y: ship.y,
+            x: neuron.x, 
+            y: neuron.y,
             lifespan: 2000,
             speed: { min: 20, max: 100},
             gravityY: 300,
@@ -579,8 +395,8 @@ class Play extends Phaser.Scene {
         }).explode();
 
         this.explodeParticles1.createEmitter({
-            x: ship.x, 
-            y: ship.y,
+            x: neuron.x, 
+            y: neuron.y,
             lifespan: 1000,
             speed: { min: 20, max: 100},
             gravityY: 300,
@@ -589,35 +405,18 @@ class Play extends Phaser.Scene {
         }).explode();
 
         this.explodeParticles2.createEmitter({
-            x: ship.x, 
-            y: ship.y,
+            x: neuron.x, 
+            y: neuron.y,
             lifespan: 1000,
             speed: { min: 20, max: 100},
             gravityY: 300,
             quantity: 3,
             frequency: 0,
         }).explode();
-         // reset ship position
-        
-        //this.didExplode.setVisible(true);
-        this.icon = this.add.image(ship.x + 35, ship.y + 35, 'transmitter').setScale(0.5, 0.5);
-        ship.destroy(); // reset ship off-screen
-
-        //this.ship.settings.spaceshipSpeed = 0;
-        //boom.anims.play('explode'); // play explode animation
+        this.icon = this.add.image(neuron.x + 35, neuron.y + 35, 'transmitter').setScale(0.5, 0.5);
+        neuron.destroy(); // reset neuron off-screen
     }
-        
-    
-        
-        /*boom.on('animationcomplete', () => { // callback after animation completes
-            ship.reset(); // reset ship position
-            ship.alpha = 1; // make ship visible again
-            boom.destroy(); // remove explosion sprite
-        });
-        */
-        // score incrememnt and repaint
-        this.p1score += ship.points;
-        //this.scoreLeft.text = this.p1score;
+        this.p1score += neuron.points;
 
         // increase electric charge
         if(this.p1score == 10) {

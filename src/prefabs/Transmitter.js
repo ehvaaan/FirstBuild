@@ -10,7 +10,7 @@ class Transmitter extends Phaser.GameObjects.Sprite {
         this.points = pointValue;
     }
 
-    isSmallShip() {
+    isSmallNeuron() {
         return false;
     }
 

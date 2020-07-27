@@ -1,4 +1,4 @@
-class SmallShip extends Transmitter {
+class SmallNeuron extends Transmitter {
 
     constructor(scene, x, y, texture, frame, pointValue) { 
         super(scene, x, y, texture, frame, pointValue);
@@ -6,7 +6,7 @@ class SmallShip extends Transmitter {
         
     }
     
-    isSmallShip() {
+    isSmallNeuron() {
             return true;
         }
         
