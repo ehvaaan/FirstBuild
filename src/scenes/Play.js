@@ -22,6 +22,8 @@ class Play extends Phaser.Scene {
         this.load.image('particle3', './assets/bluecharge22.png')
         this.load.audio('background', './assets/background.wav')
         this.load.audio('memoryretrieved', './assets/memoryretrieved.wav')
+        this.load.audio('lost', './assets/sucks.wav')
+        this.load.audio('powerup', './assets/powerup.wav')
 
         this.sfxElectricity = this.sound.add('Particle Shot');
         
@@ -73,13 +75,30 @@ class Play extends Phaser.Scene {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 0
         } 
 
-        fireConfig.fixedWidth = 0;
+        let chargeConfig = {
+            fontFamily: 'Montserrat Subrayada',
+            fontSize: '22px',
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        } 
+
+        //fireConfig.fixedWidth = 0;
 
         this.fire = this.add.text(300, 44, 'CHARGE', fireConfig).setOrigin(0.5);
         this.fire.setVisible(false);
+
+        //this.charged = this.add.text(150, 75, 'FULLY CHARGED', chargeConfig);
+        this.charged = this.add.text(430, 80, 'Press F to activate!', chargeConfig);
+        this.charged.alpha = 0;
         
         this.iconTop = this.add.image(58, 54, 'transmitter').setScale(0.7, 0.7);
         this.iconTop.alpha = 0;
@@ -94,6 +113,7 @@ class Play extends Phaser.Scene {
         this.electricIcon3.alpha = 0.3;
         this.electricIcon4 = this.add.image(432, 54, 'particle1');
         this.electricIcon4.alpha = 0.3;
+        
 
         // random x position for player to start
         var xx = Phaser.Math.Between(game.config.width - game.config.width, game.config.width);
@@ -221,9 +241,8 @@ class Play extends Phaser.Scene {
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or (M) to return to the Menu', scoreConfig2).setOrigin(0.5);
-            this.gameOver = true;
+            //this.gameOver = true;
+            this.scene.start("loseScene");
         }, null, this);
     
             
@@ -383,7 +402,7 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03); 
-            this.iconTop.alpha += 0.2;
+            this.iconTop.alpha += 0.1;
             // make second reset method so it will reset coming from other direction
         }
 
@@ -400,20 +419,70 @@ class Play extends Phaser.Scene {
         }
         
         this.sound1 = this.sound.add('memoryretrieved', audioConfig);
+        this.sound2 = this.sound.add('lost', audioConfig);
+        this.power = this.sound.add('powerup', audioConfig);
         
-        if(this.checkCollision(this.p1Rocket, this.ship06)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship06);
-            this.iconTop.alpha += 0.2;
-        }   
+        if(this.p1score == 50 && Phaser.Input.Keyboard.JustDown(keyF)) {
+            this.isCharged = true;
+            this.power.play();
+            this.charged.setVisible(false);
+        }
 
-        if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.8)) {
+        if(this.checkCollision(this.p1Rocket, this.ship06)) {
+            
+            this.iconTop.alpha += 0.2;
+            this.shipExplode(this.ship06);
+        
+            if(this.isCharged) {
+            this.music.stop();
             this.sound1.play();
-            this.iconTop.alpha = 1;
-            //this.scene.start("winScene");
-        } /* else {
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                    this.scene.start("winScene");
+                })
+        }  else if (!this.isCharged) {
+            this.music.stop();
+            this.sound2.play();
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.scene.start("loseScene");
-        } */
+        })
+        }
+    }
+        /*if(this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 1)) {
+                this.sound1.play();
+                this.cameras.main.fadeOut(1000, 0, 0, 0)
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                    this.scene.start("winScene");
+                })
+            } else if(!this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 1)) {
+            this.music.stop();
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start("loseScene");
+        })
+        }   */
+    
+
+        /* if(this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 0.8)) {
+            //this.sound1.play();
+            //this.iconTop.alpha = 1;
+            //fade to black
+            console.log(game.config.height);
+            this.sound1 = this.sound.add('memoryretrieved', audioConfig);
+
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start("winScene");
+        }) } else if(!this.checkCollision(this.iconTop, this.ship06) && (this.iconTop.alpha >= 0.8)) {
+            this.music.stop();
+            //fade to black
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start("loseScene");
+        })
+    
+        } */ 
         
         
         /* if(this.checkTopCollision(this.iconTop, this.ship06) && (this.iconTop.alpha == 0.9)) {
@@ -569,7 +638,15 @@ class Play extends Phaser.Scene {
 
         if(this.p1score == 50) {
             this.electricIcon4.alpha = 1;
+             this.tweens.add({
+                targets: this.charged,
+                alpha: 1,
+                duration: 1700,
+                repeat: 900
+              }, this);
         } 
+        
+        
 
         if(this.sound) {
             var x = Math.floor(Math.random() * 3);

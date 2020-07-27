@@ -1,5 +1,5 @@
 var jumpTimer = 0;
-// Rocket prefab
+
 class Ion extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) { 
         super(scene, x, y, texture, frame);
@@ -110,7 +110,7 @@ class Ion extends Phaser.Physics.Arcade.Sprite {
         
         // reset on miss - if this was greater than, it would constantly reset
         if((this.y > 490) || (this.y < 0) || (this.x > game.config.width) || (this.x < 0)){
-            console.log(this.y);
+            //console.log(this.y);
             this.reset();
             //this.isFiring = false;
             //this.scene.fire.setVisible(false);

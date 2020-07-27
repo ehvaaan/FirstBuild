@@ -11,18 +11,22 @@ class What extends Phaser.Scene {
     this.load.image('background', './assets/brain1.png')
     this.load.image('transmitter', './assets/transmitter.png');
     this.load.image('ion', './assets/Ion.png');
+    this.load.image('charge', './assets/chargee.png');
+
   
     }
     
     
 
     create() {
-      
+    this.cameras.main.fadeIn(2000, 0, 0, 0)
+
     this.music = this.sound.add('intro');
     this.music.setLoop(true);
     this.music.play();
 
     this.brain = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
+    //this.load.image('particle1', './assets/chargee.png');
 
     
     var sprite = this.add.sprite(game.config.width/2, game.config.height/2, 'transmitter').setScale(0.5, 0.5);
@@ -127,7 +131,6 @@ class What extends Phaser.Scene {
         targets: this.tutorial1,
         alpha: 1,
         duration: 4000,
-        //repeat: 1200,
         delay: 2500
       }, this);
 
@@ -137,9 +140,89 @@ class What extends Phaser.Scene {
           targets: this.tutorial2,
           alpha: 1,
           duration: 2000,
-          //repeat: 1200,
           delay: 6800
         }, this);
+
+  
+    this.electricIcon = this.add.image(600, 54, 'charge');
+    this.electricIcon.alpha = 0;
+    this.tweens.add({
+      targets: this.electricIcon,
+      alpha: 0.3,
+      duration: 1000,
+      delay: 6800
+    }, this);
+    this.tweens.add({
+      targets: this.electricIcon,
+      alpha: 1,
+      duration: 100,
+      delay: 7800
+    }, this);
+    this.electricIcon1 = this.add.image(558, 54, 'charge');
+    this.electricIcon1.alpha = 0;
+    this.tweens.add({
+      targets: this.electricIcon1,
+      alpha: 0.3,
+      duration: 1000,
+      delay: 6800
+    }, this);
+    this.tweens.add({
+      targets: this.electricIcon1,
+      alpha: 1,
+      duration: 100,
+      delay: 7900
+    }, this);
+    this.electricIcon2 = this.add.image(516, 54, 'charge');
+    this.electricIcon2.alpha = 0;
+    this.tweens.add({
+      targets: this.electricIcon2,
+      alpha: 0.3,
+      duration: 1000,
+      delay: 6800
+    }, this);
+    this.tweens.add({
+      targets: this.electricIcon2,
+      alpha: 1,
+      duration: 100,
+      delay: 8000
+    }, this);
+    this.electricIcon3 = this.add.image(474, 54, 'charge');
+    this.electricIcon3.alpha = 0;
+    this.tweens.add({
+      targets: this.electricIcon3,
+      alpha: 0.3,
+      duration: 1000,
+      delay: 6800
+    }, this);
+    this.tweens.add({
+      targets: this.electricIcon3,
+      alpha: 1,
+      duration: 100,
+      delay: 8100
+    }, this);
+    this.electricIcon4 = this.add.image(432, 54, 'charge');
+    this.electricIcon4.alpha = 0;
+    this.tweens.add({
+      targets: this.electricIcon4,
+      alpha: 0.3,
+      duration: 1000,
+      delay: 6800
+    }, this);
+    this.tweens.add({
+      targets: this.electricIcon4,
+      alpha: 1,
+      duration: 100,
+      delay: 8300
+    }, this);
+    this.tutorial3 = this.add.text(380, 150, 'Watch for full charge!', textConfig).setOrigin(0, 0);
+    this.tutorial3.alpha = 0;
+      this.tweens.add({
+          targets: this.tutorial3,
+          alpha: 1,
+          duration: 2000,
+          delay: 6800
+        }, this);
+    
 
     this.play = this.add.text(135, 275, 'PRESS [SPACE] TO CONTINUE', textConfig).setOrigin(0, 0);
     this.play.alpha = 0;

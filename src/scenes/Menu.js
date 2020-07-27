@@ -78,7 +78,7 @@ class Menu extends Phaser.Scene {
     this.icon = this.add.image(65, 440, 'transmitter', menuConfig).setScale(0.7, 0.7);
     this.icon = this.add.image(510, 10, 'transmitter', menuConfig).setScale(0.4, 0.4);
 
-
+    this.cameras.main.setBackgroundColor('#4488AA')
     // debug: move to next scene
     // this.scene.start("playScene");
 
@@ -100,7 +100,17 @@ class Menu extends Phaser.Scene {
             }
                 
         //this.sound.play('sfx_select');
-        this.scene.start("whatScene");
+        
+            // fade to black
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+        
+    
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start("tripScene");
+        })
+    
+        //this.cameras.main.fadeIn(6000);
+        //this.scene.start("whatScene");
 
         }
         /* if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
