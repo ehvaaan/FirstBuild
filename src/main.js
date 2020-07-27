@@ -1,3 +1,7 @@
+// Evan Melito
+// Jaedon L
+// Matthew Whitehouse 
+
 // create game configuration object// 
 let config = {
     type: Phaser.CANVAS,
