@@ -12,6 +12,10 @@ class What extends Phaser.Scene {
     this.load.image('transmitter', './assets/transmitter.png');
     this.load.image('ion', './assets/Ion.png');
     this.load.image('charge', './assets/chargee.png');
+    this.load.image('transmitter1', './assets/newtransmitter1.png');
+    this.load.image('transmitter2', './assets/newtransmitter2.png');
+    this.load.image('transmitter3', './assets/newtransmitter3.png');
+    this.load.image('transmitter4', './assets/newtransmitter4.png');
 
   
     }
@@ -41,7 +45,7 @@ class What extends Phaser.Scene {
         repeat: 1000
       }, this);
 
-    var sprite1 = this.add.sprite(75, 400, 'transmitter').setScale(0.4, 0.4);
+    var sprite1 = this.add.sprite(75, 400, 'transmitter1').setScale(0.4, 0.4);
     sprite1.alpha = 0;
     this.tweens.add({
         targets: sprite1,
@@ -51,7 +55,7 @@ class What extends Phaser.Scene {
         delay: 1700
       }, this);
 
-    var sprite2 = this.add.sprite(305, 370, 'transmitter').setScale(0.4, 0.4);
+    var sprite2 = this.add.sprite(305, 370, 'transmitter2').setScale(0.4, 0.4);
     sprite2.alpha = 0;
     this.tweens.add({
         targets: sprite2,
@@ -62,7 +66,7 @@ class What extends Phaser.Scene {
       }, this);
 
     
-    var sprite3 = this.add.sprite(575, 70, 'transmitter').setScale(0.6, 0.6);
+    var sprite3 = this.add.sprite(575, 70, 'transmitter3').setScale(0.6, 0.6);
     sprite3.alpha = 0;
     this.tweens.add({
         targets: sprite3,
@@ -72,7 +76,7 @@ class What extends Phaser.Scene {
         delay: 2700
       }, this);
     
-    var sprite4 = this.add.sprite(575, 450, 'transmitter').setScale(0.5, 0.5);
+    var sprite4 = this.add.sprite(575, 450, 'transmitter4').setScale(0.5, 0.5);
     sprite4.alpha = 0;
     this.tweens.add({
         targets: sprite4,
@@ -92,7 +96,7 @@ class What extends Phaser.Scene {
         delay: 700
       }, this);
     
-      var sprite6 = this.add.sprite(75, 110, 'transmitter').setScale(0.7, 0.7);
+      var sprite6 = this.add.sprite(75, 110, 'transmitter3').setScale(0.7, 0.7);
       sprite6.alpha = 0;
       this.tweens.add({
           targets: sprite6,

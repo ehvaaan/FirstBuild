@@ -11,7 +11,12 @@ class Menu extends Phaser.Scene {
     this.load.audio('target2', './assets/target2.wav' );
     this.load.audio('target4', './assets/target3.wav' );
     this.load.audio('Particle Shot', './assets/Particle Shot.wav');
-    this.load.image('transmitter', './assets/transmitter.png');
+    this.load.image('transmitter', './assets/original.png');
+    this.load.image('transmitter1', './assets/newtransmitter1.png');
+    this.load.image('transmitter2', './assets/newtransmitter2.png');
+    this.load.image('transmitter3', './assets/newtransmitter3.png');
+    this.load.image('transmitter4', './assets/newtransmitter4.png');
+
     //this.load.audio('background', './assets/background.wav')
 }
     
@@ -71,12 +76,12 @@ class Menu extends Phaser.Scene {
     
     
     this.icon = this.add.image(57, 54, 'transmitter', menuConfig).setScale(1, 1);
-    this.icon = this.add.image(400, 194, 'transmitter', menuConfig).setScale(0.4, 0.4);
-    this.icon = this.add.image(529, 359, 'transmitter', menuConfig).setScale(0.5, 0.5);
+    this.icon = this.add.image(400, 194, 'transmitter4', menuConfig).setScale(0.4, 0.4);
+    this.icon = this.add.image(529, 359, 'transmitter2', menuConfig).setScale(0.5, 0.5);
     this.icon = this.add.image(640, 154, 'transmitter', menuConfig).setScale(0.6, 0.6);
-    this.icon = this.add.image(150, 304, 'transmitter', menuConfig).setScale(0.3, 0.3);
-    this.icon = this.add.image(65, 440, 'transmitter', menuConfig).setScale(0.7, 0.7);
-    this.icon = this.add.image(510, 10, 'transmitter', menuConfig).setScale(0.4, 0.4);
+    this.icon = this.add.image(150, 304, 'transmitter3', menuConfig).setScale(0.3, 0.3);
+    this.icon = this.add.image(65, 440, 'transmitter2', menuConfig).setScale(0.7, 0.7);
+    this.icon = this.add.image(510, 10, 'transmitter1', menuConfig).setScale(0.4, 0.4);
 
     this.cameras.main.setBackgroundColor('#4488AA')
     // debug: move to next scene

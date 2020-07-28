@@ -6,7 +6,13 @@ class Play extends Phaser.Scene {
     preload () {
         //load images and tile sprites
         this.load.image('neurotransmitter', './assets/Ion.png');
-        this.load.image('transmitter', './assets/transmitter.png');
+        this.load.image('transmitter', './assets/original.png'); // base transmitter
+        this.load.image('transmitter1', './assets/newtransmitter1.png'); // new transmitter
+        this.load.image('transmitter2', './assets/newtransmitter2.png'); // new transmitter
+        this.load.image('transmitter3', './assets/newtransmitter3.png'); // new transmitter
+        this.load.image('transmitter4', './assets/newtransmitter4.png'); // new transmitter
+        this.load.image('polarized', './assets/transmitterPolarized1.png'); // polarized transmitter 
+
         this.load.image('brain', './assets/brain.png'); // load brain background
         this.load.image('chain', './assets/neuronchain.png'); // load brain background
         
@@ -95,7 +101,7 @@ class Play extends Phaser.Scene {
         this.charged = this.add.text(430, 80, 'Press F to activate!', chargeConfig);
         this.charged.alpha = 0;
         
-        this.iconTop = this.add.image(58, 54, 'transmitter').setScale(0.7, 0.7);
+        this.iconTop = this.add.image(58, 54, 'polarized').setScale(0.7, 0.7);
         this.iconTop.alpha = 0;
         
         this.electricIcon = this.add.image(600, 54, 'particle1');
@@ -119,11 +125,11 @@ class Play extends Phaser.Scene {
         
         // add 3 spaceneurons
         this.neuron01 = new Transmitter(this, game.config.width, 335, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.neuron02 = new Transmitter(this, game.config.width, 275, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.neuron03 = new Transmitter(this, game.config.width, 215, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.neuron04 = new Transmitter(this, game.config.width, 155, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron02 = new Transmitter(this, game.config.width, 275, 'transmitter1', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron03 = new Transmitter(this, game.config.width, 215, 'transmitter2', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.neuron04 = new Transmitter(this, game.config.width, 155, 'transmitter3', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
         this.neuron05 = new Transmitter(this, game.config.width, 95, 'transmitter', 0, 10).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.neuron06 = new SmallNeuron(this, game.config.width, 65, 'transmitter', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
+        this.neuron06 = new SmallNeuron(this, game.config.width, 65, 'transmitter4', 0, 10).setScale(0.3, 0.3).setOrigin(0, 0);
 
         let timeConfig = {
             fontSize: '22px',
@@ -297,12 +303,43 @@ class Play extends Phaser.Scene {
             this.iconTop.alpha = 1.5;
             this.power.play();
             this.charged.setVisible(false);
+            
+            this.explodeParticles.createEmitter({
+                x: this.iconTop.x, 
+                y: this.iconTop.y,
+                lifespan: 1000,
+                speed: { min: 20, max: 100},
+                gravityY: 300,
+                quantity: 3,
+                frequency: 0
+            }).explode();
+
+            this.explodeParticles1.createEmitter({
+                x: this.iconTop.x, 
+                y: this.iconTop.y,
+                lifespan: 1000,
+                speed: { min: 20, max: 100},
+                gravityY: 300,
+                quantity: 3,
+                frequency: 0
+            }).explode();
+    
+            this.explodeParticles2.createEmitter({
+                x: this.iconTop.x, 
+                y: this.iconTop.y,
+                lifespan: 2000,
+                speed: { min: 20, max: 100},
+                gravityY: 300,
+                quantity: 6,
+                frequency: 0
+            }).explode();
         }
 
         if(this.checkCollision(this.p1Ion, this.neuron06)) {
             
             this.neuronExplode(this.neuron06);
-        
+            this.iconTop = this.add.image(58, 54, 'transmitter').setScale(0.7, 0.7);
+
             if(this.isCharged) {
             this.music.stop();
             this.sound1.play();

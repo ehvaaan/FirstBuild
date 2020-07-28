@@ -4,7 +4,7 @@ class Trip extends Phaser.Scene {
         }
         
     preload() {
-        this.load.image('title', './assets/Title.png')
+        this.load.image('title', './assets/Memory.png')
     }
     
     create() {
