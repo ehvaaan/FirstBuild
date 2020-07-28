@@ -204,7 +204,7 @@ class Play extends Phaser.Scene {
 
         if(!this.gameOver) {
             // update neurons
-            this.neuron01.update();
+            this.neuron01.update2();
             this.neuron02.update();
             this.neuron03.update();
             this.neuron04.update();
@@ -265,35 +265,54 @@ class Play extends Phaser.Scene {
             this.p1Ion.reset();
             this.neuronExplode(this.neuron01);
             this.iconTop.alpha += 0.1;
+            this.next = true;
         }
         
-        
+        if(this.next) {
+            this.neuron02.update2();
+        }
 
         if(this.checkCollision(this.p1Ion, this.neuron02)) {
             this.p1Ion.reset();
             this.neuronExplode(this.neuron02);
             this.iconTop.alpha += 0.1;
+            this.next1 = true;
         }
 
-        
+        if(this.next1) {
+            this.neuron03.update2();
+        }
         
         if(this.checkCollision(this.p1Ion, this.neuron03)) {
             this.p1Ion.reset();
             this.neuronExplode(this.neuron03); 
             this.iconTop.alpha += 0.1;
+            this.next2 = true;
+        }
+
+        if(this.next2) {
+            this.neuron04.update2();
         }
 
         if(this.checkCollision(this.p1Ion, this.neuron04)) {
             this.p1Ion.reset();
             this.neuronExplode(this.neuron04);
             this.iconTop.alpha += 0.1;
+            this.next3 = true;
         }   
+
+        if(this.next3) {
+            this.neuron05.update2();
+        }
 
         if(this.checkCollision(this.p1Ion, this.neuron05)) {
             this.p1Ion.reset();
             this.neuronExplode(this.neuron05);
             this.iconTop.alpha += 0.1;
+            this.next4 = true;
         }
+
+        
         
         this.sound1 = this.sound.add('memoryretrieved', audioConfig);
         this.sound2 = this.sound.add('lost', audioConfig);

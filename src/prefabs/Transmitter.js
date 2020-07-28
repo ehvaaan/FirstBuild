@@ -15,6 +15,10 @@ class Transmitter extends Phaser.GameObjects.Sprite {
     }
 
     update() {
+        this.x -= 0;
+    }
+    
+    update2() {
         // move spaceship left
         this.x -= game.settings.spaceshipSpeed;
         //this.ship04 -= game.settings.spaceshipSpeed1;
