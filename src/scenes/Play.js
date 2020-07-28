@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
         this.load.image('polarized', './assets/transmitterPolarized1.png'); // polarized transmitter 
 
         this.load.image('brain', './assets/brain.png'); // load brain background
-        this.load.image('chain', './assets/neuronchain.png'); // load brain background
+        this.load.image('chain', './assets/neuronchain.png'); // load connector chains 
         
         this.load.image('particle1', './assets/chargee.png');
         this.load.image('particle2', './assets/bluechargee.png')
@@ -202,25 +202,18 @@ class Play extends Phaser.Scene {
             delay: 0
         }
 
-        if(!this.gameOver) {
+        
             // update neurons
             this.neuron01.update2();
-            this.neuron02.update();
-            this.neuron03.update();
-            this.neuron04.update();
-            this.neuron05.update();
-            this.neuron06.update();
-        }
+          
+        
 
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
-            game.settings.spaceneuronSpeed = game.settings.spaceneuronSpeed/1.5;
-            this.scene.restart(this.p1score);
-        }
+        
 
 
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyM)) {
+        /* if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyM)) {
             this.scene.start("menuScene");
-        }
+        } */
 
         
 
@@ -277,6 +270,8 @@ class Play extends Phaser.Scene {
             this.neuronExplode(this.neuron02);
             this.iconTop.alpha += 0.1;
             this.next1 = true;
+            this.chain = this.add.image(this.neuron01.x + 10, this.neuron02.y + 15, 'chain');
+
         }
 
         if(this.next1) {
@@ -394,17 +389,9 @@ class Play extends Phaser.Scene {
         }
     }
 
-    
-    
-   checkTopCollision(icon, neuron) {
-        if(icon.x < neuron.x + neuron.width * neuron.scale && icon.x + icon.width * icon.scale > neuron.x && icon.y < neuron.y + neuron.height * neuron.scale && icon.height * icon.scale + icon.y > neuron.y) {
-            //icon.alpha += 0.2;
-            return true;
-            
-        } else {
-            return false;
-        }
-    } 
+  
+
+
 
     /* setChain(neuron, neuron) {
             this.icon = this.add.image(neuron.x + 10, neuron.y + 15, 'transmitter').setScale(0.3, 0.3);

@@ -33,4 +33,9 @@ class SmallNeuron extends Transmitter {
         this.y = 800;
     }
 
+    reset() {
+        this.x = 335;
+        this.game.settings.spaceshipSpeed = 0;
+    }
+
 }
