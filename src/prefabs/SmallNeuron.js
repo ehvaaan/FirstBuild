@@ -10,14 +10,19 @@ class SmallNeuron extends Transmitter {
             return true;
         }
         
-    update() {
-        // move spaceship left
+    update2() {
         this.x -= game.settings.spaceshipSpeed*1.5;
-
-        // wrap around from left to right edge
+        
         if(this.x <= 0 - this.width) {
             this.x = game.config.width;
         }
+    }
+    update() {
+        // move spaceship left
+        this.x -= 0;
+
+        // wrap around from left to right edge
+        
 
         // wrap around from right to left edge
         

@@ -273,7 +273,6 @@ class Play extends Phaser.Scene {
             this.p1Ion.reset();
             this.neuronExplode(this.neuron02);
             this.iconTop.alpha += 0.1;
-            //this.iconChain = this.add.image(neuron.x + 152, neuron.y + 132, 'chain').setScale(0.3, 0.3);
         }
 
         
@@ -300,7 +299,10 @@ class Play extends Phaser.Scene {
         this.sound2 = this.sound.add('lost', audioConfig);
         this.power = this.sound.add('powerup', audioConfig);
         
+
         if(this.p1score == 50 && Phaser.Input.Keyboard.JustDown(keyF)) {
+            
+            this.small = true;
             this.isCharged = true;
             this.iconTop.alpha = 1.5;
             this.power.play();
@@ -335,6 +337,9 @@ class Play extends Phaser.Scene {
                 quantity: 6,
                 frequency: 0
             }).explode();
+        }
+        if(this.small) {
+            this.neuron06.update2();
         }
 
         if(this.checkCollision(this.p1Ion, this.neuron06)) {
@@ -476,7 +481,10 @@ class Play extends Phaser.Scene {
             this.electricIcon3.alpha = 1;
         }
 
-        if(this.p1score == 50) {
+        if(this.p1score >= 50) {
+            
+        //this.neuron06.update();
+            
             this.electricIcon4.alpha = 1;
              this.tweens.add({
                 targets: this.charged,
@@ -485,6 +493,8 @@ class Play extends Phaser.Scene {
                 repeat: 900
               }, this);
         } 
+        
+        
         
         
 
