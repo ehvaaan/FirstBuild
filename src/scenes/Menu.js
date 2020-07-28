@@ -16,18 +16,15 @@ class Menu extends Phaser.Scene {
     this.load.image('transmitter2', './assets/newtransmitter2.png');
     this.load.image('transmitter3', './assets/newtransmitter3.png');
     this.load.image('transmitter4', './assets/newtransmitter4.png');
-
-    //this.load.audio('background', './assets/background.wav')
+    this.load.image('background', './assets/newbackground1.png')
 }
     
     
 
     create() {
-    /*var music = this.sound.add('background');
-    music.setLoop(true);
-    music.play();*/
-    //this.synth = this.sound.play('background');
-
+    this.brain = this.add.tileSprite(0, 0, 640, 480, 'background').setOrigin(0, 0);
+    this.brain.tilePositionX = 500;
+    this.brain.update();
     // menu display
     if(window.localStorage) {
         console.log('Local storage supported');
@@ -98,7 +95,8 @@ class Menu extends Phaser.Scene {
 
     update() {
         //this.music.stop('background');
-        
+        this.brain.tilePositionX -= 1;
+
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
             // easy mode
             game.settings = {

@@ -33,8 +33,7 @@ class What extends Phaser.Scene {
     this.music.play();
 
     this.brain = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
-    //this.load.image('particle1', './assets/chargee.png');
-
+    
     
     var sprite = this.add.sprite(game.config.width/2, game.config.height/2, 'transmitter').setScale(0.5, 0.5);
     sprite.alpha = 0;
@@ -243,9 +242,7 @@ class What extends Phaser.Scene {
     
       }
     
-    update() {
-        this.brain.tilePositionX -= 3;
-        
+    update() {        
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         if (Phaser.Input.Keyboard.JustDown(keyF)) {

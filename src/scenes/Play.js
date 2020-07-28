@@ -50,6 +50,8 @@ class Play extends Phaser.Scene {
     
         // place tile sprite 
         this.brain = this.add.tileSprite(0, 0, 640, 480, 'brain').setOrigin(0, 0);
+        this.brain.tilePositionX = 500;
+        //this.brain.update();
 
         this.explodeParticles = this.add.particles('particle1');
         this.explodeParticles1 = this.add.particles('particle2');
@@ -189,6 +191,7 @@ class Play extends Phaser.Scene {
     
 
     update() {
+        //this.brain.tilePositionX -= 1;
         
         let audioConfig = {
             mute: false,
