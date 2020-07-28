@@ -19,6 +19,9 @@ class What extends Phaser.Scene {
     
 
     create() {
+    console.log('By gaining charge, you will eventually be able to activate the connection to the new neuron!');
+    console.log('Press F if you want to learn!')
+
     this.cameras.main.fadeIn(2000, 0, 0, 0)
 
     this.music = this.sound.add('intro');
@@ -233,10 +236,20 @@ class What extends Phaser.Scene {
           repeat: 1200,
           delay: 9000
         }, this);
-    }
-
+    
+      }
+    
     update() {
         this.brain.tilePositionX -= 3;
+        
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {
+          console.log('The connection that is formed between these neurons through which the action potential transfers is called the synapse!');
+          console.log('The neuron that transfers the charge is called the pre-synaptic neuron, and the one that receives it is called the post-synaptic neuron!');
+      
+  
+        }
         
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.music.stop();

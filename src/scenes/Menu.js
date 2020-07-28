@@ -85,6 +85,8 @@ class Menu extends Phaser.Scene {
     //keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     //keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    console.log('Your goal is to form a memory: gain enough charge to fire an action potential to the neuron at the top, and gain a new memory!');
     
 
     }

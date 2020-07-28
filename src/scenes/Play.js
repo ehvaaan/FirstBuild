@@ -30,6 +30,8 @@ class Play extends Phaser.Scene {
         
     
     create() {
+    console.log('Will you remember?');
+
     
     this.music = this.sound.add('background');
     this.music.setLoop(true);
@@ -127,7 +129,6 @@ class Play extends Phaser.Scene {
             fontSize: '22px',
         }
     
-        console.log('create');
         // 2:30 in seconds
         this.initialTime = 60;
     
@@ -164,6 +165,7 @@ class Play extends Phaser.Scene {
         
         // score
         this.p1score = 0;
+        console.log('Will you be able to remember?');
         
         // game over flag
         this.gameOver = false;

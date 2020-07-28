@@ -15,6 +15,8 @@ class Win extends Phaser.Scene {
     
 
     create() {
+    console.log('You have created a new memory!');
+
     this.cameras.main.fadeIn(2000, 0, 0, 0)
 
     this.win = this.add.image(game.config.width/2, game.config.height/2, 'win').setScale(0.7, 0.7);

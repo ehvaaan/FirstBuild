@@ -5,9 +5,6 @@ class Lose extends Phaser.Scene {
 
     
     preload() {
-    // load audio
-    //this.load.audio('', './assets/ .wav');
-    // load images
     this.load.image('lose', './assets/losescreen.png')
   
     }
@@ -15,6 +12,8 @@ class Lose extends Phaser.Scene {
     
 
     create() {
+    console.log('You have failed to create a new memory');
+
     this.cameras.main.fadeIn(2000, 0, 0, 0)
     
     this.lose = this.add.image(game.config.width/2, game.config.height/2, 'lose').setScale(0.7, 0.7);
@@ -38,7 +37,7 @@ class Lose extends Phaser.Scene {
         this.tweens.add({
             targets: this.text1,
             alpha: 1,
-            duration: 1700,
+            duration: 2500,
             repeat: 900,
             delay: 4500
           }, this);
@@ -47,9 +46,9 @@ class Lose extends Phaser.Scene {
         this.tweens.add({
             targets: this.text2,
             alpha: 1,
-            duration: 1700,
+            duration: 2500,
             repeat: 900,
-            delay: 4500
+            delay: 7000
           }, this);
         
     
