@@ -59,9 +59,11 @@ class Win extends Phaser.Scene {
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+            console.log('You strengthened this memory, and parts of it are now easier to access!');
             this.scene.start("playScene")
         }
         if(Phaser.Input.Keyboard.JustDown(keyM)) {
+            console.log('You strengthened this memory, and parts of it are now easier to access!');
             this.scene.start("menuScene");
         }
     }
