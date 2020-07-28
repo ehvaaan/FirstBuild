@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
         this.load.image('transmitter4', './assets/newtransmitter4.png'); // new transmitter
         this.load.image('polarized', './assets/transmitterPolarized1.png'); // polarized transmitter 
 
-        this.load.image('brain', './assets/background3.png'); // load brain background
+        this.load.image('brain', './assets/Background3.png'); // load brain background
         this.load.image('chain', './assets/neuronchain.png'); // load connector chains 
         
         this.load.image('particle1', './assets/chargee.png');
