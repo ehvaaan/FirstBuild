@@ -1,3 +1,4 @@
+this.gameOver = false;
 class Play extends Phaser.Scene { 
     constructor() {
         super("playScene")
@@ -13,7 +14,7 @@ class Play extends Phaser.Scene {
         this.load.image('transmitter4', './assets/newtransmitter4.png'); // new transmitter
         this.load.image('polarized', './assets/transmitterPolarized1.png'); // polarized transmitter 
 
-        this.load.image('brain', './assets/brain.png'); // load brain background
+        this.load.image('brain', './assets/background3.png'); // load brain background
         this.load.image('chain', './assets/neuronchain.png'); // load connector chains 
         
         this.load.image('particle1', './assets/chargee.png');
@@ -36,12 +37,20 @@ class Play extends Phaser.Scene {
         
     
     create() {
-    console.log('Will you remember?');
-
+    
+        let audioConfig = {
+            mute: false,
+            volume: 0.5,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: false,
+            delay: 0
+        }
     
     this.music = this.sound.add('background');
-    this.music.setLoop(true);
-    this.music.play();
+    //this.music.setLoop(true);
+    this.music.play(audioConfig);
 
     // 60s playclock
     this.clock1 = this.time.delayedCall(30000, () => {
@@ -175,7 +184,7 @@ class Play extends Phaser.Scene {
         console.log('Will you be able to remember?');
         
         // game over flag
-        this.gameOver = false;
+        //this.gameOver = false;
 
         // 60-second play clock
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
@@ -194,7 +203,7 @@ class Play extends Phaser.Scene {
         
         let audioConfig = {
             mute: false,
-            volume: 0.7,
+            volume: 0.5,
             rate: 1,
             detune: 0,
             seek: 0,
@@ -203,11 +212,7 @@ class Play extends Phaser.Scene {
         }
 
         
-            // update neurons
-            this.neuron01.update2();
-          
-        
-
+            
         
 
 
@@ -243,6 +248,12 @@ class Play extends Phaser.Scene {
         
        if(!this.gameOver) {
             this.p1Ion.update();
+            this.neuron01.update2();
+            this.neuron02.update();
+            this.neuron03.update();
+            this.neuron04.update();
+            this.neuron05.update();
+            this.neuron06.update();
         }
 
        

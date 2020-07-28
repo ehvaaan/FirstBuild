@@ -60,7 +60,7 @@ class Lose extends Phaser.Scene {
     update() {
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
             console.log('Deja vu??');
-            game.scene.start("playScene")
+            this.scene.start("playScene")
         }
         if(Phaser.Input.Keyboard.JustDown(keyM)) {
             console.log('Deja vu??');
